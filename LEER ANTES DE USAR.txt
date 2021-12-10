@@ -1,0 +1,11 @@
+LEER ANTES DE USAR ESTE MINI-FRAMEWORK
+
+1. Tener instalado nodeJS
+2. Colocar un nombre al proyecto antes de instalar las dependencias de npm
+3. instalar las dependencias de npm
+4. En el composer.json, ponerle nombre al proyecto y cambiar el autor
+5. Verfiricar que está instalado composer 'composer -v'
+6. Actualizar composer con 'composer update', para que se instale las dependencias de composer
+7. Verficar que esté instalado globalmente y como desarrollo GULP 'gulp -v'
+8. Iniciar las tareas de gulp con 'npm start' o 'gulp'
+9. Abrir servidor de php

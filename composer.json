@@ -1,0 +1,19 @@
+{
+    "name": "diegorojasnava/controladorredes",
+    "description": "Proyecto Controlador de redes con MVC, PHP 8, SASS, GULP",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Diego Rojas Nava",
+            "email": "diegorn.10@hotmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "MVC\\" : "./",
+            "Controllers\\" : "./controllers",
+            "Model\\" : "./models",
+            "Classes\\" : "./classes"
+        }
+    }
+}

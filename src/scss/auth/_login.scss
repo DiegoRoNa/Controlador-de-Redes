@@ -1,0 +1,76 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+//ESTILOS DEL LOGIN
+
+.login{
+    padding-top: 5rem;
+    @include m.tablet {
+        @include m.grid(2, 0);
+        padding-top: 10rem;
+    }
+
+    .title-login{
+        padding: .5rem;
+    }
+
+    .title{
+        color: v.$azulFuerte;
+        text-transform: uppercase;
+        font-size: 4.5rem;
+        text-align: center;
+        letter-spacing: 3px;
+        text-shadow: 0px 2px 2px darken(v.$blanco, 10%);
+        @include m.tablet {
+            font-size: 7.3rem;
+        }
+    }
+
+    .tagline{
+        font-size: 2rem;
+        line-height: 1;
+
+        @include m.tablet {
+            font-size: 3rem;
+            text-align: justify;
+        }
+
+        span{
+            text-transform: uppercase;
+            color: v.$cyan;
+        }
+    }
+
+    
+    .boton{
+        @include m.tablet {
+            display: flex;
+            justify-content: center;
+        }
+    }
+    input[type="submit"]{
+        @include m.colorBoton(v.$azul, v.$blanco);
+        @include m.tablet {
+            padding: 1.5rem 6rem;
+        }
+    }
+
+
+    .acciones{
+        margin-top: 2rem;
+        text-align: center;
+        font-weight: 900;
+
+       
+
+        a{
+            font-size: 2.1rem;
+            color: v.$negroClaro;
+            &:hover{
+                color: v.$negro;
+            }
+        }
+    }
+
+}
+

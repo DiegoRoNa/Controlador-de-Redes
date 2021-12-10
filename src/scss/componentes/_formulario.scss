@@ -1,0 +1,65 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+//ESTILOS DE LOS FORMULARIOS
+
+.formulario{
+    padding-top: 3rem;
+
+    @include m.tablet {
+        padding-top: 1rem;
+    }
+
+    h3{
+        @include m.tablet {
+            font-size: 5rem;
+            padding: 2rem;
+            padding-bottom: 0;
+        }
+    }
+
+    .campo{
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+
+        @include m.tablet {
+            margin-bottom: 4rem;
+        }
+
+        label{
+            flex: 0 0 10rem;
+            color: darken(v.$blanco, 25%);
+
+            @include m.tablet {
+                flex: 0 0 15rem;
+                color: lighten(v.$negro, 10%);
+                font-weight: 700;
+                font-size: 2.5rem;
+            }
+        }
+    
+        input{
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            font-size: 2rem;
+            background-color: lighten(v.$gris, 40%);
+            transition: all 300ms ease;
+            &::placeholder{
+                color: lighten(v.$gris, 5%);
+            }
+
+            &:focus{
+                border: 3px solid v.$cyan;
+                outline: none;
+                box-shadow: 2px 0 1rem v.$blanco;
+            }
+
+            @include m.tablet {
+                font-weight: 600;
+            }
+        }
+    }
+    
+}

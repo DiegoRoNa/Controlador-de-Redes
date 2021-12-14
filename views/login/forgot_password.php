@@ -11,13 +11,14 @@
             
             <?php include_once __DIR__.'/../templates/alertas.php'; ?>
             
-            <div class="campo">
+            <div class="campo" id="campo-email">
                 <label for="email">Correo</label>
                 <input type="email" name="email" id="email" placeholder="Correo electrónico">
+                <i class="validacion-estado fas fa-times-circle"></i>
             </div>
 
             <div class="boton">
-                <input type="submit" value="Enviar instrucciones" class="button">
+                <button type="submit" class="button">Enviar instrucciones</button>
             </div>
             
         </form>

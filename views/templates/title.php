@@ -7,4 +7,8 @@
     <p class="tagline">Los usuarios invitados, únicamente pueden consultar la información en cada red, <span>NO PUEDEN GESTIONAR NINGUNA RED</span></p>
 <?php elseif($titulo === 'Olvidaste tu contraseña'): ?>
     <p class="tagline">Coloca tu correo electrónico asignado para enviarte las instrucciones y reestablezcas tu contraseña</p>
+<?php elseif($titulo === 'Reestablecer contraseña'): ?>
+    <p class="tagline">Coloca tu nueva contraseña</p>
+    <p class="tagline">Confirma tu contraseña, asegúrate que sean igual</p>
+    <p class="tagline">Para continuar con el procedimiento</p>
 <?php endif; ?>

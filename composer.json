@@ -15,5 +15,8 @@
             "Model\\" : "./models",
             "Classes\\" : "./classes"
         }
+    },
+    "require": {
+        "phpmailer/phpmailer": "^6.5"
     }
 }

@@ -22,6 +22,7 @@
         display: flex;
         align-items: center;
         margin-bottom: 2rem;
+        position: relative;
 
         @include m.tablet {
             margin-bottom: 4rem;
@@ -38,7 +39,7 @@
                 font-size: 2.5rem;
             }
         }
-    
+
         input{
             flex: 1;
             padding: 1rem;
@@ -59,6 +60,36 @@
             @include m.tablet {
                 font-weight: 600;
             }
+        }
+
+        .validacion-estado{
+            position: absolute;
+            right: .8rem;
+            bottom: 1.4rem;
+            z-index: 100;
+            font-size: 1.4rem;
+            opacity: 0;
+
+            @include m.tablet {
+                font-size: 1.8rem;
+            }
+        }
+    }
+
+    .campo-correcto{
+        .validacion-estado{
+            color: v.$verde;
+            opacity: 1;
+        }
+    }
+    .campo-incorrecto{
+        .validacion-estado{
+            color: v.$rojo;
+            opacity: 1;
+        }
+
+        input{
+            border: 3px solid v.$rojo;
         }
     }
     

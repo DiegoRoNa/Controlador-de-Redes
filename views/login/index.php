@@ -11,17 +11,19 @@
 
             <?php include_once __DIR__.'/../templates/alertas.php'; ?>
 
-            <div class="campo">
+            <div class="campo" id="campo-email">
                 <label for="email">Correo</label>
                 <input type="email" name="email" id="email" placeholder="Correo electrónico">
+                <i class="validacion-estado fas fa-times-circle"></i>
             </div>
             <div class="campo">
                 <label for="password">Contraseña</label>
                 <input type="password" name="password" id="password" placeholder="Contraseña">
+                <i class="validacion-estado fas fa-times-circle"></i>
             </div>
 
             <div class="boton">
-                <input type="submit" value="Iniciar sesión" class="button">
+                <button type="submit" class="button">Iniciar sesión</button>
             </div>
             
         </form>

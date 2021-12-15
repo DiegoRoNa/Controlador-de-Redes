@@ -6,6 +6,7 @@ A TRAVÉS DEL ROUTER QUE CONTIENE LAS RUTAS DE LA WEB */
 //INCLUIR BD, AUTOLOAD, FUNCIONES Y HERLPERS
 require_once __DIR__ . '/../includes/app.php';
 
+use Controllers\DashboardController;
 use Controllers\LoginController;
 use MVC\Router;
 $router = new Router();
@@ -32,7 +33,8 @@ $router->post('/register', [LoginController::class, 'register']);
 
 //PRIVADA
 //Zona de proyectos DASHBOARD
-
+$router->get('/controller', [DashboardController::class, 'index']);
+$router->get('/users', [DashboardController::class, 'users']);
 
 // Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
 $router->comprobarRutas();

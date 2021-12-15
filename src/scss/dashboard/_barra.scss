@@ -1,0 +1,58 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+//ESTILOS EN LA NAV DE DASHBOARD
+
+.barra-mobile{
+    background-color: transparent;
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 1px 10px 10px -8px rgba(250, 250, 250, 0.4);
+    @include m.tablet {
+        display: none;
+    }
+
+    h1{
+        margin: 0;
+    }
+
+    .menu{
+
+        img{
+            width: .8rem;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.barra{
+    display: none;
+
+    @include m.tablet {
+        background-color: transparent;
+        padding: 1rem 2rem;
+        box-shadow: 1px 10px 10px -6px rgba(250, 250, 250, 0.4);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    p{
+        margin: 0;
+        font-size: 2rem;
+        color: v.$cyan;
+        font-weight: 900;
+    }
+
+    .cerrar-sesion{
+        @include m.colorBoton( darken(v.$cyan, 20%), v.$blanco );
+        border-radius: .5rem;
+        font-size: 1.7rem;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+}

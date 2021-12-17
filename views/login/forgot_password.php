@@ -32,8 +32,7 @@
 <?php 
 
 $script = '
-    <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
-    <script src="build/js/validar-formulario.js"></script>
+    
 ';
 
 ?>

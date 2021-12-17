@@ -6,6 +6,8 @@ const expresiones = {
     //apellidos: /^[a-zA-ZÀ-ÿ\s]{1,90}$/, // Letras y espacios, pueden llevar acentos.
     password: /^.{6,10}$/, // 6 a 10 digitos.
     email: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+    network: /^[a-zA-Z0-9\_\-\s]{1,20}$/, // Letras, numeros, guion y guion_bajo, de 1 a 20 caracteres
+    octet: /^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/
     //paquete: /^\d{1,2}$/ // 1 a 2 numeros.
 }
 
@@ -20,6 +22,21 @@ const validarFormulario = (e) =>{
             break;
         case 'password2':
             validarCampo(expresiones.password, e.target, 'password2');
+            break;
+        case 'network':
+            validarCampo(expresiones.network, e.target, 'network');
+            break;
+        case 'fioctet':
+            validarCampo(expresiones.octet, e.target, 'fioctet');
+            break;
+        case 'soctet':
+            validarCampo(expresiones.octet, e.target, 'soctet');
+            break;
+        case 'toctet':
+            validarCampo(expresiones.octet, e.target, 'toctet');
+            break;
+        case 'fooctet':
+            validarCampo(expresiones.octet, e.target, 'fooctet');
             break;
     
         default:

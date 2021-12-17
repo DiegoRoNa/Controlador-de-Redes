@@ -1,0 +1,55 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+//ESTILOS DE LAS TABLAS
+
+table{
+    margin-top: 2rem;
+    text-align: center;
+
+    th{
+        font-size: 2rem;
+
+        @include m.tablet {
+            font-size: 2.5rem;
+        }
+    }
+
+    td{
+        font-size: 1.4rem;
+        padding: 2rem 0 !important;
+
+        @include m.tablet {
+            font-size: 1.7rem;
+        }
+
+        .opcion-eliminar{
+            display: flex;
+            justify-content: center;
+
+            .btn-eliminar{
+                @include m.colorBoton(v.$rojo, v.$blanco);
+                cursor: pointer;
+                border-radius: 1rem;
+                padding: .5rem 2.5rem;
+                font-size: 1.4rem;
+                border: none;
+
+                @include m.tablet {
+                    font-size: 1.7rem;
+                }
+            }
+        }
+    }
+
+    .editar-red{
+        transition: all 300ms ease;
+        &:hover{
+            cursor: pointer;
+            font-size: 1.7rem;
+            @include m.tablet {
+                font-size: 2rem;
+            }
+        }
+    }
+}

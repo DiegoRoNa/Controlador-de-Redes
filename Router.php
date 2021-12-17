@@ -30,7 +30,7 @@ class Router
 
         $currentUrl = $_SERVER['PATH_INFO'] ?? '/';//ruta actual de la URL
         $method = $_SERVER['REQUEST_METHOD'];//metodo
-
+        
         //SI EL METODO ES GET
         if ($method === 'GET') {
             $fn = $this->getRoutes[$currentUrl] ?? null;//fn será la funcion de esta RUTA GET

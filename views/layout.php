@@ -18,6 +18,10 @@
         <!--VARIABLE PARA CARGAR JS EN ALGUNAS PAGINAS-->
         <?php echo $script ?? ''; ?>
     </main>
-
+    <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
+    <script src="build/js/validar-formulario.js"></script>
+    <script src="build/js/jquery.js"></script>
+    <script src="build/js/popper.js"></script>
+    <script src="build/js/bootstrap.js"></script>
 </body>
 </html>

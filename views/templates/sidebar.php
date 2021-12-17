@@ -11,7 +11,9 @@
     
     <nav class="sidebar-nav">
         <a class="<?=($titulo === 'Controlador') ? 'activo' : '';?>" href="/controller">Redes</a>
-        <a class="<?=($titulo === 'Usuarios') ? 'activo' : '';?>" href="/users">Usuarios</a>
+        <?php if($_SESSION['role'] === 's_admin'): ?>
+            <a class="<?=($titulo === 'Usuarios') ? 'activo' : '';?>" href="/users">Usuarios</a>
+        <?php endif; ?>
     </nav>
 
     <div class="cerrar-sesion-mobile button">

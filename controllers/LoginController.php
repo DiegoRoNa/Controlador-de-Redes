@@ -3,7 +3,7 @@
 namespace Controllers;
 
 use Classes\Email;
-use Model\User;
+use Model\Admin;
 use MVC\Router;
 
 class LoginController{
@@ -16,31 +16,31 @@ class LoginController{
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $user = new User($_POST);
+            $admin = new Admin($_POST);
 
-            $alertas = $user->validateLogin();
+            $alertas = $admin->validateLogin();
 
             if (empty($alertas)) {
                 //BUSCAR EL USUARIO EN LA BD CON EL CORREO
-                $user = User::where('email', $user->email);
+                $admin = Admin::where('email', $admin->email);
 
                 //SI EL CORREO NO EXISTE
-                if (!$user || $user->confirm === '0') {
-                    User::setAlerta('error', 'No hay una cuena vinculada con este correo, o la cuenta no ha sido confirmada');
+                if (!$admin || $admin->confirm === '0') {
+                    Admin::setAlerta('error', 'No hay una cuena vinculada con este correo, o la cuenta no ha sido confirmada');
                 }else{
                     //SI EXISTE EL CORREO
                     //VERIFICAR PASSWORD
-                    if (!password_verify($_POST['password'], $user->password)) {
+                    if (!password_verify($_POST['password'], $admin->password)) {
                         //CONTRASEÑA INCORRECTA
-                        User::setAlerta('error', 'La contraseña es incorrecta');
+                        Admin::setAlerta('error', 'La contraseña es incorrecta');
                     }else{
                         //INICIAR LA SESION DEL USUARIO
                         //YA EXISTE LA SESION INICIADA DESDE Router.php
-                        $_SESSION['id'] = $user->id;
-                        $_SESSION['name'] = $user->name;
-                        $_SESSION['surnames'] = $user->surnames;
-                        $_SESSION['email'] = $user->email;
-                        $_SESSION['role'] = $user->role;
+                        $_SESSION['id'] = $admin->id;
+                        $_SESSION['name'] = $admin->name;
+                        $_SESSION['surnames'] = $admin->surnames;
+                        $_SESSION['email'] = $admin->email;
+                        $_SESSION['role'] = $admin->role;
                         $_SESSION['login'] = true;
   
                         //REDIRECCIONAR
@@ -50,7 +50,7 @@ class LoginController{
             }
         }
 
-        $alertas = User::getAlertas();
+        $alertas = Admin::getAlertas();
 
         $router->render('login/index', [
             'titulo' => 'Iniciar sesión',
@@ -72,42 +72,42 @@ class LoginController{
         $alertas = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user = new User($_POST);
+            $admin = new Admin($_POST);
 
-            $alertas = $user->validateEmail();
+            $alertas = $admin->validateEmail();
 
             if (empty($alertas)) {
 
                 //BUSCAR AL USUARIO POR EL CORREO
-                $user = User::where('email', $user->email);
+                $admin = Admin::where('email', $admin->email);
 
                 //VERIFICAR QUE EXISTE EL USUARIO Y QUE LA CUENTA ESTÁ CONFIRMADA
-                if ($user && $user->confirm === '1') {
+                if ($admin && $admin->confirm === '1') {
                     //GENERAR TOKEN
-                    $user->createToken();
+                    $admin->createToken();
 
                     //ELIMINAR PASSWORD2 DEL OBJETO
-                    unset($user->password2);
+                    unset($admin->password2);
 
                     //ACTUALIZAR EN LA BD EL TOKEN
-                    $user->guardar();
+                    $admin->guardar();
 
                     //ENVIAR EMAIL
-                    $email = new Email($user->email, $user->name, $user->token);
+                    $email = new Email($admin->email, $admin->name, $admin->token);
                     $email->enviarInstrucciones();
 
                     //ENVIAR MENSAJE DE EXITO
-                    User::setAlerta('exito', 'Hemos enviado las instrucciones al correo electrónico para confirmar la cuenta');
+                    Admin::setAlerta('exito', 'Hemos enviado las instrucciones al correo electrónico para confirmar la cuenta');
 
                 }else{
-                    User::setAlerta('error', 'Hubo un error, no hay una cuenta vinculada con este correo o la cuenta no ha sido confirmada');
+                    Admin::setAlerta('error', 'Hubo un error, no hay una cuenta vinculada con este correo o la cuenta no ha sido confirmada');
                     
                 }
 
             }
         }
 
-        $alertas = User::getAlertas();
+        $alertas = Admin::getAlertas();
 
         $router->render('login/forgot_password', [
             'titulo' => 'Olvidaste tu contraseña',
@@ -126,33 +126,33 @@ class LoginController{
         if(!$token) header('Location: /');
 
         //VERIFICAR QUE EL TOKEN SEA EL DEL USUARIO
-        $user = User::where('token', $token);
-        if (empty($user)) {
+        $admin = Admin::where('token', $token);
+        if (empty($admin)) {
             //si no existe el token
-            User::setAlerta('error', 'Token no válido');
+            Admin::setAlerta('error', 'Token no válido');
             $mostrar = false; //quitamos el formulario
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             //SINCRONIZAR EL OBJETO CON LA BD
-            $user->sincronizar($_POST);
+            $admin->sincronizar($_POST);
 
             //VALIDAR EL FORMULARIO
-            $alertas = $user->validatePasswords();
+            $alertas = $admin->validatePasswords();
 
             if (empty($alertas)) {
                 //HASHEAR EL PASSWORD
-                $user->hashPassword();
+                $admin->hashPassword();
 
                 //ELIMINAR PASSWORD2 DEL OBJETO, YA QUE ACTIVE RECORD TRABAJA CON UN ESPEJO DE LA TABLA EN LA DB
-                unset($user->password2);
+                unset($admin->password2);
 
                 //ELIMINAR EL TOKEN
-                $user->token = null;
+                $admin->token = null;
 
                 //GUARDAR EN LA BD
-                $resultado = $user->guardar();
+                $resultado = $admin->guardar();
 
                 //REDIRECCIONAR
                 if ($resultado) {
@@ -162,7 +162,7 @@ class LoginController{
             }
         }
 
-        $alertas = User::getAlertas();
+        $alertas = Admin::getAlertas();
 
         $router->render('login/reestablish', [
             'titulo' => 'Reestablecer contraseña',
@@ -178,27 +178,27 @@ class LoginController{
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $user = new User($_POST);
+            $admin = new Admin($_POST);
 
             if (empty($alertas)) {
                 //COMPROBAR QUE EL CORREO NO EXISTE EN LA BD
-                $userExists = User::where('email', $user->email);
+                $adminExists = Admin::where('email', $admin->email);
 
-                if ($userExists) {
+                if ($adminExists) {
                     var_dump('Ya existe');
                     exit;
                 }else{
                     //HASHEAR PASSWORD
-                    $user->hashPassword();
+                    $admin->hashPassword();
 
                     //ELIMINAR PASSWORD2 DEL OBJETO, YA QUE ACTIVE RECORD TRABAJA CON UN ESPEJO DE LA TABLA EN LA DB
-                    unset($user->password2);
+                    unset($admin->password2);
 
                     //GENERAR EL TOKEN
-                    //$user->createToken();
+                    //$admin->createToken();
 
                     //GUARDAR EN LA BD
-                    $resultado = $user->guardar();
+                    $resultado = $admin->guardar();
 
                     //REDIRECCIONAR
                     if ($resultado) {

@@ -6,6 +6,7 @@ A TRAVÉS DEL ROUTER QUE CONTIENE LAS RUTAS DE LA WEB */
 //INCLUIR BD, AUTOLOAD, FUNCIONES Y HERLPERS
 require_once __DIR__ . '/../includes/app.php';
 
+use Controllers\ApiController;
 use Controllers\DashboardController;
 use Controllers\LoginController;
 use MVC\Router;
@@ -35,6 +36,22 @@ $router->post('/register', [LoginController::class, 'register']);
 //Zona de proyectos DASHBOARD
 $router->get('/controller', [DashboardController::class, 'index']);
 $router->get('/users', [DashboardController::class, 'users']);
+
+//RUTAS PARA LA API
+$router->get('/api/networks', [ApiController::class, 'select_networks']);
+$router->post('/api/network', [ApiController::class, 'create_networks']);
+$router->post('/api/network/update', [ApiController::class, 'update_networks']);
+$router->post('/api/network/delete', [ApiController::class, 'delete_networks']);
+
+$router->get('/api/ips', [ApiController::class, 'select_ips']);
+$router->post('/api/ip', [ApiController::class, 'create_ips']);
+$router->post('/api/ip/update', [ApiController::class, 'update_ips']);
+$router->post('/api/ip/delete', [ApiController::class, 'delete_ips']);
+
+$router->get('/api/admins', [ApiController::class, 'select_admins']);
+$router->post('/api/admin', [ApiController::class, 'create_admins']);
+$router->post('/api/admin/update', [ApiController::class, 'update_admins']);
+$router->post('/api/admin/delete', [ApiController::class, 'delete_admins']);
 
 // Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
 $router->comprobarRutas();

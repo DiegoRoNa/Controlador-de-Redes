@@ -1,0 +1,55 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+//ESTILOS DE LOS MODALES
+
+.modal-contenido{
+    @include m.fondoDegradado(v.$grisOscuro);
+    @include m.tablet {
+        box-shadow: 10px 10px 10px 0px rgb(255, 255, 255);        
+    }
+
+
+    h3{
+        font-size: 3rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .campo{
+        margin-bottom: 2rem;
+
+        label{
+            flex: 0 0 12rem;
+            font-size: 2rem;
+
+            @include m.tablet {
+                font-size: 1.8rem;
+            }
+        }
+    }
+
+    .octets{
+        width: 100%;
+        @include m.grid(4, 1rem);
+
+                        //ACOMODAR LOS ICONOS EN PC Y MOVIL
+        .octet{
+            width: 100%;
+        }
+    }
+
+    .opciones{
+        display: flex;
+        justify-content: space-between;
+
+        .btn-submit{
+            @include m.colorBoton(v.$azul, v.$blanco);
+        }
+
+        .btn-cerrar{
+            @include m.colorBoton(v.$rojo, v.$blanco);
+        }
+    }
+}

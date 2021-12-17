@@ -2,9 +2,9 @@
 
 namespace Model;
 
-class User extends ActiveRecord{
+class Admin extends ActiveRecord{
     //TABLA Y COLUMNAS DE LA BD
-    protected static $tabla = 'users';
+    protected static $tabla = 'admins';
     protected static $columnasDB = ['id', 'name', 'surnames', 'email', 'password', 'role', 'token', 'confirm'];
 
     public function __construct($args = [])

@@ -6,7 +6,7 @@
 .sidebar{
     opacity: 0;
     height: 0;
-    background-color: transparent;
+    background-color: v.$negro;
     overflow: hidden;
     transition-property: opacity;
     transition-duration: 500ms;

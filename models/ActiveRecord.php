@@ -80,6 +80,13 @@ class ActiveRecord {
         return $resultado;
     }
 
+    //BUSCAR UNA IP ESPECÍFICA
+    public static function existsIP($fioctet, $soctet, $toctet, $fooctet){
+        $query = "SELECT * FROM " . static::$tabla . " WHERE fi_octet = ${fioctet} AND s_octet = ${soctet} AND t_octet = ${toctet} AND fo_octet = ${fooctet}";
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+
     // SQL para Consultas Avanzadas.
     //Consulta plana de SQL (usar cuando los métodos del modelo no son suficientes)
     public static function SQL($consulta) {

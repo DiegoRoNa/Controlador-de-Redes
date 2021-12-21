@@ -24,11 +24,13 @@ table{
         }
 
         .opcion-eliminar{
-            display: flex;
-            justify-content: center;
 
+            display: flex;
+            flex-direction: row;
+            justify-content:space-evenly;            
+
+            .btn-entrar,
             .btn-eliminar{
-                @include m.colorBoton(v.$rojo, v.$blanco);
                 cursor: pointer;
                 border-radius: 1rem;
                 padding: .5rem 2.5rem;
@@ -38,6 +40,15 @@ table{
                 @include m.tablet {
                     font-size: 1.7rem;
                 }
+            }
+
+            .btn-entrar{
+                @include m.colorBoton(v.$azulFuerte, v.$blanco);
+                
+            }
+
+            .btn-eliminar{
+                @include m.colorBoton(v.$rojo, v.$blanco);
             }
         }
     }

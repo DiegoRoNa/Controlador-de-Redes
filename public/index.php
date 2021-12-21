@@ -35,6 +35,7 @@ $router->post('/register', [LoginController::class, 'register']);
 //PRIVADA
 //Zona de proyectos DASHBOARD
 $router->get('/controller', [DashboardController::class, 'index']);
+$router->get('/network', [DashboardController::class, 'network']);
 $router->get('/users', [DashboardController::class, 'users']);
 
 //RUTAS PARA LA API

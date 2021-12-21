@@ -11,7 +11,7 @@
                     >&#43; Nueva Red</button>
                 </div>
                 
-                <!-- Modal -->
+                <!-- Modal NUEVA RED -->
                 <div class="modal fade" id="modalRed" tabindex="-1" aria-labelledby="modalRedLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content modal-contenido">
@@ -19,9 +19,8 @@
                                 <h3 class="modal-title descripcion-pagina" id="modalRedLabel">Agregar Red</h3>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body" id="modalNew">
                                 <form method="POST" class="formulario" novalidate>
-
                                     <div class="mb-3 campo" id="campo-network">
                                         <label for="network" class="col-form-label">Nombre Red</label>
                                         <input type="text" name="network" id="network" placeholder="Nombre Red">
@@ -59,6 +58,33 @@
                     </div>
                 </div>
 
+
+                <!-- Modal EDITAR RED -->
+                <div class="modal fade" id="modalEditRed" tabindex="-1" aria-labelledby="modalEditRedLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content modal-contenido">
+                            <div class="modal-header">
+                                <h3 class="modal-title descripcion-pagina" id="modalEditRedLabel">Editar Red</h3>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="modalEdit">
+                                <form method="POST" class="formulario" novalidate>
+                                    <div class="mb-3 campo" id="campo-network">
+                                        <label for="network" class="col-form-label">Nombre Red</label>
+                                        <input type="text" name="network" id="newNetwork" placeholder="Nombre Red">
+                                        <i class="validacion-estado fas fa-times-circle"></i>
+                                    </div>
+                            
+                                    <div class="modal-footer opciones">
+                                        <button type="submit" class="button btn-submit">Guardar</button>
+                                        <button type="button" class="button btn-cerrar" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!--LAS REDES SE MUESTRAN DESDE JS-->
                 <table id="listado-redes" class="table table-dark table-borderless listado-redes">
                     <!--<thead>
@@ -77,6 +103,7 @@
                             <td>192.168.1.0</td>
                             <td>
                                 <div class="opcion-eliminar">
+                                    <a href="/network" class="btn-entrar">Entrar</a>    
                                     <button class="btn-eliminar">Eliminar</button>
                                 </div>
                             </td>
@@ -86,6 +113,7 @@
                             <td>192.168.0.0</td>
                             <td>
                                 <div class="opcion-eliminar">
+                                    <a href="/network" class="btn-entrar">Entrar</a>    
                                     <button class="btn-eliminar">Eliminar</button>
                                 </div>
                             </td>
@@ -95,6 +123,7 @@
                             <td>8.0.0.0</td>
                             <td>
                                 <div class="opcion-eliminar">
+                                    <a href="/network" class="btn-entrar">Entrar</a>    
                                     <button class="btn-eliminar">Eliminar</button>
                                 </div>
                             </td>

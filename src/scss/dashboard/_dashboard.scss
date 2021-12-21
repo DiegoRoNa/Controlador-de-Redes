@@ -12,12 +12,12 @@
 
     .principal{
         flex: 1;//obliga que el nav tome todo el ancho de la pantalla sobrante
-        @include m.scroll(v.$morado, v.$azulFuerte);
+        @include m.scroll(v.$negroClaro, v.$grisOscuro);
         overflow: scroll;// SCROLL SOLO EN LA SECCION DEL CONTENIDO
     }
 
     .contenido{
-        padding: 2rem;
+        padding: 8rem;
 
         .nombre-pagina{
             font-size: 4rem;

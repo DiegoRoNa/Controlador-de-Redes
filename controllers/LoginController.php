@@ -10,7 +10,6 @@ class LoginController{
 
     //  /
     public static function index(Router $router){
-        $_SESSION = [];
 
         $alertas = [];
 

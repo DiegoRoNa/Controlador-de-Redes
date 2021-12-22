@@ -13,8 +13,14 @@ class ApiController{
         //CONSULTAR TODAS LAS REDES A LA BD
         $networks = Network::all();
 
+        //PASAMOS LA SESION
+        $session = $_SESSION;
+
         //PASAR EL OBJETO
-        echo json_encode(['networks' => $networks]);
+        echo json_encode([
+            'networks' => $networks,
+            'session' => $session
+        ]);
     }
 
     //  /api/network
@@ -63,7 +69,42 @@ class ApiController{
     //  /api/network/update
     public static function update_networks(){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            echo 'DESDE update';
+
+            //VALIDAR QUE LA RED EXISTE
+            $network = Network::where('id', $_POST['id']);
+
+            if (!$network) {
+                $response = [
+                    'type' => 'error',
+                    'message' => 'Hay un error, esta Red no existe. O fue eliminada desde otra cuenta'
+                ];
+                echo json_encode($response);
+                return;
+            }
+
+            //INSTANCIAR NUEVO OBJETO
+            $network = new Network($_POST);
+
+            //GUARDARMOS EN LA BD
+            $result = $network->guardar();
+
+            //ENVIAMOS RESPUESTA AL FRONTEND
+            if (!$result) {
+                $response = [
+                    'type' => 'error',
+                    'message' => 'Hubo un error al actualizar'
+                ];
+                echo json_encode($response);
+                return;
+            }else{
+                $response = [
+                    'type' => 'exito',
+                    'message' => 'Red actualizada',
+                    'id' => $network->id
+                ];
+                echo json_encode($response);
+            }
+            
         }
     }
 
@@ -76,7 +117,7 @@ class ApiController{
             if (!$network) {
                 $response = [
                     'type' => 'error',
-                    'message' => 'Hubo un error en el servidor, esta red no existe'
+                    'message' => 'Hubo un error en el servidor, esta red no existe o fue eliminada desde otra cuenta'
                 ];
 
                 echo json_encode($response);

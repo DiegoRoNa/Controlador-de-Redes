@@ -51,6 +51,11 @@
         font-size: 2rem;
         color: v.$cyan;
         font-weight: 900;
+
+        span{
+            font-size: 1.2rem;
+            color: v.$amarillo;
+        }
     }
 
     .cerrar-sesion{

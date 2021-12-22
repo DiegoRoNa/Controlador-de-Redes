@@ -1,89 +1,51 @@
 <?php include_once __DIR__.'/header-dashboard.php'; ?>
 
             <div class="contenedor-sm">
+
                 <!-- Boton para apareer modal -->
-                <div class="contenedor-agregar">
-                    <button type="button"
-                            class="agregar-red agregar button" 
-                            id="agregar-red"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalRed"        
-                    >&#43; Nueva Red</button>
-                </div>
+                <?php if($_SESSION['role'] === 's_admin' || $_SESSION['role'] === 'admin'): ?>
+                    <div class="contenedor-agregar">
+                        <button type="button"
+                                class="agregar-red agregar button" 
+                                id="agregar-red"       
+                        >&#43; Nueva Red</button>
+                    </div>
+                <?php endif; ?>
                 
-                <!-- Modal NUEVA RED -->
-                <div class="modal fade" id="modalRed" tabindex="-1" aria-labelledby="modalRedLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content modal-contenido">
-                            <div class="modal-header">
-                                <h3 class="modal-title descripcion-pagina" id="modalRedLabel">Agregar Red</h3>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body" id="modalNew">
-                                <form method="POST" class="formulario" novalidate>
-                                    <div class="mb-3 campo" id="campo-network">
-                                        <label for="network" class="col-form-label">Nombre Red</label>
-                                        <input type="text" name="network" id="network" placeholder="Nombre Red">
-                                        <i class="validacion-estado fas fa-times-circle"></i>
-                                    </div>
-                                    <div class="mb-3 campo" id="campo-octet">
-                                        <label for="fioctet" class="col-form-label">IP Global</label>
-                                        <div class="mb-3 octets">
-                                            <div class="mb-3 campo" id="campo-fioctet">
-                                                <input type="number" class="octet" name="fioctet" id="fioctet">
-                                                <i class="validacion-estado fas fa-times-circle"></i>
-                                            </div>
-                                            <div class="mb-3 campo" id="campo-soctet">
-                                                <input type="number" class="octet" name="soctet" id="soctet">
-                                                <i class="validacion-estado fas fa-times-circle"></i>
-                                            </div>
-                                            <div class="mb-3 campo" id="campo-toctet">
-                                                <input type="number" class="octet" name="toctet" id="toctet">
-                                                <i class="validacion-estado fas fa-times-circle"></i>
-                                            </div>
-                                            <div class="mb-3 campo" id="campo-fooctet">
-                                                <input type="number" class="octet" name="fooctet" id="fooctet">
-                                                <i class="validacion-estado fas fa-times-circle"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="modal-footer opciones">
-                                        <button type="submit" class="button btn-submit">Agregar</button>
-                                        <button type="button" class="button btn-cerrar" data-bs-dismiss="modal">Cerrar</button>
-                                    </div>
-                                </form>
+                <!-- Modal NUEVA RED 
+            <div class="modal">
+                    <form method="POST" class="formulario cerrar" novalidate>
+                        <h3 class="modal-title descripcion-pagina">Agregar Red</h3>
+                        
+                        <div class="mb-3 campo" id="campo-network">
+                            <label for="network" class="col-form-label">Nombre Red</label>
+                            <input type="text" name="network" id="network" placeholder="Nombre Red">
+                        </div>
+                        <div class="mb-3 campo" id="campo-octet">
+                            <label for="fioctet" class="col-form-label">IP Global</label>
+                            <div class="mb-3 octets">
+                                <div class="mb-3 campo" id="campo-fioctet">
+                                    <input type="number" class="octet" name="fioctet" id="fioctet">
+                                </div>
+                                <div class="mb-3 campo" id="campo-soctet">
+                                    <input type="number" class="octet" name="soctet" id="soctet">
+                                </div>
+                                <div class="mb-3 campo" id="campo-toctet">
+                                    <input type="number" class="octet" name="toctet" id="toctet">
+                                </div>
+                                <div class="mb-3 campo" id="campo-fooctet">
+                                    <input type="number" class="octet" name="fooctet" id="fooctet">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-
-                <!-- Modal EDITAR RED -->
-                <div class="modal fade" id="modalEditRed" tabindex="-1" aria-labelledby="modalEditRedLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content modal-contenido">
-                            <div class="modal-header">
-                                <h3 class="modal-title descripcion-pagina" id="modalEditRedLabel">Editar Red</h3>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body" id="modalEdit">
-                                <form method="POST" class="formulario" novalidate>
-                                    <div class="mb-3 campo" id="campo-network">
-                                        <label for="network" class="col-form-label">Nombre Red</label>
-                                        <input type="text" name="network" id="newNetwork" placeholder="Nombre Red">
-                                        <i class="validacion-estado fas fa-times-circle"></i>
-                                    </div>
-                            
-                                    <div class="modal-footer opciones">
-                                        <button type="submit" class="button btn-submit">Guardar</button>
-                                        <button type="button" class="button btn-cerrar" data-bs-dismiss="modal">Cerrar</button>
-                                    </div>
-                                </form>
-                            </div>
+                        <div class="modal-footer opciones">
+                            <button type="submit" class="button btn-submit">Agregar</button>
+                            <button type="button" class="button btn-cerrar">Cerrar</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
+            -->
 
                 <!--LAS REDES SE MUESTRAN DESDE JS-->
                 <table id="listado-redes" class="table table-dark table-borderless listado-redes">

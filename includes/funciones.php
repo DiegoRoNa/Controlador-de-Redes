@@ -21,3 +21,17 @@ function isAuth() : void {
         header('Location: /');
     }
 }
+
+//Funcion para mostrar el tipo de role del admin
+function role($role){
+    $admin = '';
+    if ($role === 's_admin') {
+        $admin = 'Super administrador';
+    }elseif ($role === 'admin') {
+        $admin = 'Administrador';
+    }else{
+        $admin = 'Invitado';
+    }
+
+    return $admin;
+}

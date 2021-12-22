@@ -28,8 +28,3 @@ window.addEventListener('resize', function() {
     }
 })
 
-//NAV FIJO
-window.addEventListener('scroll', function(){
-    const barra = document.querySelector('.barra');
-    barra.classList.toggle('fixed', this.window.scrollY>0);
-});

@@ -5,8 +5,8 @@
 (function(){
 
     getNetworks();//MOSTRAR LAS REDES
-    submitNewNetwork();
     let networks = [];//DOM VIRTUAL: PASO 1
+    let admin = [];
 
     //EXPRESION REGULAR PARA LOS INPUT DE LOS OCTETOS DE LA IP
     const expresiones = {
@@ -14,6 +14,10 @@
         network: /^[a-zA-Z0-9\_\-\s]{1,20}$/
     }
 
+    const btnNewNetwork = document.querySelector('#agregar-red');
+    btnNewNetwork.addEventListener('click', function(){
+        showForm();
+    });
 
     //FUNCION PARA CONSULTAR LAS REDES A LA API
     async function getNetworks(){
@@ -25,10 +29,11 @@
 
             //OBTENER RESPUESTA DE LA API
             const response = await result.json();//OBJECT
-
+            
             //DOM VIRTUAL: PASO 2
             //ASIGNAR LAS REDES EN EL ARREGLO DECLARADO AL INICIO
             networks = response.networks;
+            admin = response.session;
             showNetworks();
             
         } catch (error) {
@@ -89,13 +94,13 @@
             const tdNetwork = document.createElement('TD');
             tdNetwork.textContent = network.network;
             tdNetwork.classList.add('editar-red');
-            tdNetwork.dataset.bsToggle = 'modal';
-            tdNetwork.dataset.bsTarget = '#modalEditRed';
             
-            tdNetwork.addEventListener('click', function(){
-                submitEditNetwork({...network});
-            })
-    
+            //VALIDAR QUE SOLO SUPER ADMIN Y ADMIN PUEDEN EDITAR LA RED
+            if (admin.role === 's_admin' || admin.role === 'admin') {
+                tdNetwork.addEventListener('click', function(){
+                    showForm(true, {...network});
+                });
+            }
 
             const tdIp = document.createElement('TD');
             tdIp.textContent = network.fi_octet+'.'+network.s_octet+'.'+network.t_octet+'.'+network.fo_octet;
@@ -119,10 +124,15 @@
             btnDelete.onclick = function(){
                 confirmDeleteNetwork({...network});
             }
+            
 
             //AGREGAR EL BUTTON AL DIV
             deleteOption.appendChild(btnEntrar);
-            deleteOption.appendChild(btnDelete);
+
+            //VALIDAR QUE SOLO SUPER ADMIN Y ADMIN PUEDEN BORRAR LA RED
+            if (admin.role === 's_admin' || admin.role === 'admin') {
+                deleteOption.appendChild(btnDelete);
+            }
             tdButton.appendChild(deleteOption);
 
             //AGREGAR LOS TD AL TR
@@ -155,15 +165,15 @@
     
                 //VALIDAR EL FORMULARIO
                 if (nameNetWork === '' || fioctet === '' || soctet === '' || toctet === '' || fooctet === '') {
-                    showAlert('Completa correctamente el formulario', 'error', document.querySelector('.modal-header'));
+                    showAlert('Completa correctamente el formulario', 'error', document.querySelector('.modal-title'));
                     return;
                 }
                 if (!expresiones.network.test(nameNetWork)) {
-                    showAlert("El nombre debe contener menos de 20 caracteres y acepta '- ó _'", 'error', document.querySelector('.modal-header'));
+                    showAlert("El nombre debe contener menos de 20 caracteres y acepta '- ó _'", 'error', document.querySelector('.modal-title'));
                     return;
                 }
                 if (!expresiones.octet.test(fioctet) || !expresiones.octet.test(soctet) || !expresiones.octet.test(toctet) || !expresiones.octet.test(fooctet)) {
-                    showAlert('Coloca un formato válido para la IP', 'error', document.querySelector('.modal-header'));
+                    showAlert('Coloca un formato válido para la IP', 'error', document.querySelector('.modal-title'));
                     return;
                 }
                 
@@ -172,7 +182,7 @@
         });
     }
     
-
+/*
     function submitEditNetwork(network){
         const inputNetWork = document.querySelector('#newNetwork');
         inputNetWork.setAttribute('value', network.network);
@@ -204,7 +214,118 @@
         
     }
     
+*/
+    function showForm(edit = false, network){
+        const modal = document.createElement('DIV');
+        modal.classList.add('modals');
+        modal.innerHTML = `
+            <form method="POST" class="formulario" novalidate>
+                <h3 class="modal-title descripcion-pagina">${edit ? 'Editar Red' : 'Agregar Red'}</h3>
 
+                <div class="campo" id="campo-network">
+                    <label for="network">Nombre Red</label>
+                    <input type="text" 
+                           name="network" 
+                           id="network"
+                           value="${edit ? network.network : ''}"
+                           placeholder="${edit ? 'Nuevo nombre' : 'Nombre Red'}">
+                </div>
+
+                ${edit ? '' : `
+                    <div class="campo" id="campo-octet">
+                        <label for="fioctet">IP Global</label>
+                        <div class="octets">
+                            <div class="campo" id="campo-fioctet">
+                                <input type="number" class="octet" name="fioctet" id="fioctet">
+                            </div>
+                            <div class="campo" id="campo-soctet">
+                                <input type="number" class="octet" name="soctet" id="soctet">
+                            </div>
+                            <div class="campo" id="campo-toctet">
+                                <input type="number" class="octet" name="toctet" id="toctet">
+                            </div>
+                            <div class="campo" id="campo-fooctet">
+                                <input type="number" class="octet" name="fooctet" id="fooctet">
+                            </div>
+                        </div>
+                    </div>
+                `}
+
+                <div class="opciones">
+                    <button type="submit" class="button btn-submit">${edit ? 'Guardar' : 'Agregar'}</button>
+                    <button type="button" class="button btn-cerrar">Cerrar</button>
+                </div>
+            </form>
+        `;
+
+        setTimeout(() => {
+            const form = document.querySelector('.formulario');
+            form.classList.add('animar');
+        }, 0);
+
+         //CERRAR MODAL CON DELEGATION
+         modal.addEventListener('click', function(e){
+            e.preventDefault();
+
+            //DENTRO DE TODO EL MODAL, SELECCIONAR EL BOTON CANCELAR
+            if (e.target.classList.contains('btn-cerrar')) {
+
+                const form = document.querySelector('.formulario');
+                    form.classList.add('cerrar');
+                setTimeout(() => {
+                    modal.remove();    
+                }, 500);
+ 
+            }
+
+            //DENTRO DE TODO EL MODAL, SELECCIONAR EL BOTON AÑADIR TAREA
+            if (e.target.classList.contains('btn-submit')) {
+
+                if (edit) {
+                    const nameNetWork = document.querySelector('#network').value.trim();
+
+                    //VALIDAR EL FORMULARIO
+                    if (nameNetWork === '') {
+                        showAlert('Coloca un nombre a la red', 'error', document.querySelector('.modal-title'));
+                        return;
+                    }
+                    if (!expresiones.network.test(nameNetWork)) {
+                        showAlert("El nombre debe contener menos de 20 caracteres y acepta '- ó _'", 'error', document.querySelector('.modal-title'));
+                        return;
+                    }
+ 
+                    network.network = nameNetWork;
+                    editNetwork(network);                    
+                }else{
+                    const nameNetWork = document.querySelector('#network').value.trim();
+                    const fioctet = document.querySelector('#fioctet').value.trim();
+                    const soctet = document.querySelector('#soctet').value.trim();
+                    const toctet = document.querySelector('#toctet').value.trim();
+                    const fooctet = document.querySelector('#fooctet').value.trim();
+        
+                    //VALIDAR EL FORMULARIO
+                    if (nameNetWork === '' || fioctet === '' || soctet === '' || toctet === '' || fooctet === '') {
+                        showAlert('Completa correctamente el formulario', 'error', document.querySelector('.modal-title'));
+                        return;
+                    }
+                    if (!expresiones.network.test(nameNetWork)) {
+                        showAlert("El nombre debe contener menos de 20 caracteres y acepta '- ó _'", 'error', document.querySelector('.modal-title'));
+                        return;
+                    }
+                    if (!expresiones.octet.test(fioctet) || !expresiones.octet.test(soctet) || !expresiones.octet.test(toctet) || !expresiones.octet.test(fooctet)) {
+                        showAlert('Coloca un formato válido para la IP', 'error', document.querySelector('.modal-title'));
+                        return;
+                    }
+                    
+                    addNetwork(nameNetWork, fioctet, soctet, toctet, fooctet);
+                }
+                
+ 
+            }
+         });
+        //AÑADIR AL BODY
+        document.querySelector('.dashboard').appendChild(modal);
+    }
 
     //ALERTA DE VALORES VACIOS
     function showAlert(message, type, reference){
@@ -255,14 +376,14 @@
             const response = await result.json();
 
             //MOSTRAR ALERTA DE ERROR O EXITO
-            showAlert(response.message, response.type, document.querySelector('.modal-header'));
+            showAlert(response.message, response.type, document.querySelector('.modal-title'));
 
             if (response.type === 'error') {
                 return;
             }else {
-                const btnCerrar = document.querySelector('.btn-cerrar');
+                const modal = document.querySelector('.modals');
                 setTimeout(() => {
-                    btnCerrar.click();
+                    modal.remove();
                 }, 2000);
             }
                 
@@ -290,9 +411,69 @@
         
     }
 
-
     async function editNetwork(network){
-        console.log(network);
+        //CREAR EL FORMDATA() PARA MANDARLE LA INFORMACION NUEVA A LA API
+        const { id, fi_octet, s_octet, t_octet, fo_octet, url } = network;
+
+        const data = new FormData();
+        data.append('id', id);
+        data.append('network', network.network);
+        data.append('fi_octet', fi_octet);
+        data.append('s_octet', s_octet);
+        data.append('t_octet', t_octet);
+        data.append('fo_octet', fo_octet);
+        data.append('url', url);
+
+        /**PARA PODER VISUALIZAR LOS DATOS QUE SE ENVIARÁN AL BACKEND
+         * for( let valor of datos.values()){
+            console.log(valor);
+        }
+         */
+
+        //CONEXION A LA API
+        try {
+            const url = 'http://localhost:8000/api/network/update';
+            const response = await fetch(url, {
+                method: 'POST',
+                body: data
+            });
+
+            //OBTENER LA RESPUESTA DEL BACKEND
+            const result = await response.json();
+
+            if (result.type === 'exito') {
+                Swal.fire(
+                    'Actualizado',
+                    result.message,
+                    'success'
+                )
+
+                //QUITAR EL MODAL DEL FORMULARIO
+                const modal = document.querySelector('.modals');
+                setTimeout(() => {
+                    modal.remove();
+                }, 500);
+
+                //ACTUALIZAR LA RED EN TIEMPO REAL DOM VIRTUAL
+                networks = networks.map(memoryNetwork => {//hiteramos el arreglo para crear uno nuevo
+                    //Evaluar si el id de la red es igual al que se le da click
+                    if (memoryNetwork.id === id) {
+                        //cambiar el nombre al valor nuevo del click
+                        memoryNetwork.network = network.network;
+                    }
+
+                    //Retornar la tarea actualizada
+                    return memoryNetwork;
+                });
+
+                //Mostrar las redes para generar de nuevo el html
+                showNetworks();
+            }
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
         
     }
 
@@ -305,7 +486,7 @@
             confirmButtonText: 'Sí',
             cancelButtonText: 'No'
         }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
+            //Read more about isConfirmed, isDenied below
             if (result.isConfirmed) {
                 deletNetwork(network);
             }
@@ -365,5 +546,4 @@
             networkList.removeChild(networkList.firstChild);//elimina el primer elemento
         }
     }
-        
 })();//este (), ejecuta esta funcion inmediatamente

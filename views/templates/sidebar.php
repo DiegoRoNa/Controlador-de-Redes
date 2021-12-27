@@ -12,7 +12,7 @@
     <nav class="sidebar-nav">
         <a class="<?=($titulo === 'Controlador') ? 'activo' : '';?>" href="/controller">Redes</a>
         <?php if($_SESSION['role'] === 's_admin'): ?>
-            <a class="<?=($titulo === 'Usuarios') ? 'activo' : '';?>" href="/users">Usuarios</a>
+            <a class="<?=($titulo === 'Usuarios') ? 'activo' : '';?>" href="/admins">Administradores</a>
         <?php endif; ?>
     </nav>
 

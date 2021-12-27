@@ -17,13 +17,26 @@
     }
 
     .contenido{
-        padding: 8rem;
+        padding: 2rem;
+        @include m.tablet {
+            padding: 8rem;
+        }
 
         .nombre-pagina{
-            font-size: 4rem;
+            font-size: 5rem;
             margin-top: .5rem;
             text-align: center;
             letter-spacing: 1px;
+            font-weight: 900;
+        }
+
+        .nombre-ip{
+            color: v.$naranja;
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 0;
+            font-weight: none;
+            letter-spacing: 3px;
         }
 
         .contenedor-agregar{

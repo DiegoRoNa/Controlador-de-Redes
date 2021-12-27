@@ -11,41 +11,6 @@
                         >&#43; Nueva Red</button>
                     </div>
                 <?php endif; ?>
-                
-                <!-- Modal NUEVA RED 
-            <div class="modal">
-                    <form method="POST" class="formulario cerrar" novalidate>
-                        <h3 class="modal-title descripcion-pagina">Agregar Red</h3>
-                        
-                        <div class="mb-3 campo" id="campo-network">
-                            <label for="network" class="col-form-label">Nombre Red</label>
-                            <input type="text" name="network" id="network" placeholder="Nombre Red">
-                        </div>
-                        <div class="mb-3 campo" id="campo-octet">
-                            <label for="fioctet" class="col-form-label">IP Global</label>
-                            <div class="mb-3 octets">
-                                <div class="mb-3 campo" id="campo-fioctet">
-                                    <input type="number" class="octet" name="fioctet" id="fioctet">
-                                </div>
-                                <div class="mb-3 campo" id="campo-soctet">
-                                    <input type="number" class="octet" name="soctet" id="soctet">
-                                </div>
-                                <div class="mb-3 campo" id="campo-toctet">
-                                    <input type="number" class="octet" name="toctet" id="toctet">
-                                </div>
-                                <div class="mb-3 campo" id="campo-fooctet">
-                                    <input type="number" class="octet" name="fooctet" id="fooctet">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer opciones">
-                            <button type="submit" class="button btn-submit">Agregar</button>
-                            <button type="button" class="button btn-cerrar">Cerrar</button>
-                        </div>
-                    </form>
-                </div>
-            -->
 
                 <!--LAS REDES SE MUESTRAN DESDE JS-->
                 <table id="listado-redes" class="table table-dark table-borderless listado-redes">
@@ -98,7 +63,6 @@
 include_once __DIR__.'/footer-dashboard.php';
 
 $script .= '
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="build/js/redes.js"></script>
 ';
 ?>

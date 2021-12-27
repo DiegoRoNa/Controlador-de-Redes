@@ -36,7 +36,7 @@ $router->post('/register', [LoginController::class, 'register']);
 //Zona de proyectos DASHBOARD
 $router->get('/controller', [DashboardController::class, 'index']);
 $router->get('/network', [DashboardController::class, 'network']);
-$router->get('/users', [DashboardController::class, 'users']);
+$router->get('/admins', [DashboardController::class, 'admins']);
 
 //RUTAS PARA LA API
 $router->get('/api/networks', [ApiController::class, 'select_networks']);
@@ -45,9 +45,7 @@ $router->post('/api/network/update', [ApiController::class, 'update_networks']);
 $router->post('/api/network/delete', [ApiController::class, 'delete_networks']);
 
 $router->get('/api/ips', [ApiController::class, 'select_ips']);
-$router->post('/api/ip', [ApiController::class, 'create_ips']);
-$router->post('/api/ip/update', [ApiController::class, 'update_ips']);
-$router->post('/api/ip/delete', [ApiController::class, 'delete_ips']);
+$router->post('/api/host', [ApiController::class, 'create_host']);
 
 $router->get('/api/admins', [ApiController::class, 'select_admins']);
 $router->post('/api/admin', [ApiController::class, 'create_admins']);

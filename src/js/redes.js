@@ -11,6 +11,8 @@
     //EXPRESION REGULAR PARA LOS INPUT DE LOS OCTETOS DE LA IP
     const expresiones = {
         octet: /^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/,
+        fioctet: /^([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/,
+        fooctet: /^[0]$/,
         network: /^[a-zA-Z0-9\_\-\s]{1,20}$/
     }
 
@@ -150,71 +152,6 @@
         });
     }
 
-    function submitNewNetwork(){
-        const modalBody = document.querySelector('#modalNew');
-
-        modalBody.addEventListener('click', function(e){
-            e.preventDefault();
-    
-            if(e.target.classList.contains('btn-submit')){
-                const nameNetWork = document.querySelector('#network').value.trim();
-                const fioctet = document.querySelector('#fioctet').value.trim();
-                const soctet = document.querySelector('#soctet').value.trim();
-                const toctet = document.querySelector('#toctet').value.trim();
-                const fooctet = document.querySelector('#fooctet').value.trim();
-    
-                //VALIDAR EL FORMULARIO
-                if (nameNetWork === '' || fioctet === '' || soctet === '' || toctet === '' || fooctet === '') {
-                    showAlert('Completa correctamente el formulario', 'error', document.querySelector('.modal-title'));
-                    return;
-                }
-                if (!expresiones.network.test(nameNetWork)) {
-                    showAlert("El nombre debe contener menos de 20 caracteres y acepta '- ó _'", 'error', document.querySelector('.modal-title'));
-                    return;
-                }
-                if (!expresiones.octet.test(fioctet) || !expresiones.octet.test(soctet) || !expresiones.octet.test(toctet) || !expresiones.octet.test(fooctet)) {
-                    showAlert('Coloca un formato válido para la IP', 'error', document.querySelector('.modal-title'));
-                    return;
-                }
-                
-                addNetwork(nameNetWork, fioctet, soctet, toctet, fooctet);
-            }
-        });
-    }
-    
-/*
-    function submitEditNetwork(network){
-        const inputNetWork = document.querySelector('#newNetwork');
-        inputNetWork.setAttribute('value', network.network);
-
-        const modalBody = document.querySelector('#modalEdit');
-
-        modalBody.addEventListener('click', function(e){
-            e.preventDefault();
-            if(e.target.classList.contains('btn-submit')){
-                const nameNetWork = inputNetWork.value.trim();
-
-                //VALIDAR EL FORMULARIO
-                if (nameNetWork === '') {
-                    showAlert('Coloca un nombre a la red', 'error', document.querySelector('.modal-header'));
-                    return;
-                }
-                if (!expresiones.network.test(nameNetWork)) {
-                    showAlert("El nombre debe contener menos de 20 caracteres y acepta '- ó _'", 'error', document.querySelector('.modal-header'));
-                    return;
-                }
-
-
-                network.network = nameNetWork;
-                editNetwork(network);
-
-            }
-            
-        });
-        
-    }
-    
-*/
     function showForm(edit = false, network){
         const modal = document.createElement('DIV');
         modal.classList.add('modals');
@@ -263,22 +200,22 @@
             form.classList.add('animar');
         }, 0);
 
-         //CERRAR MODAL CON DELEGATION
-         modal.addEventListener('click', function(e){
+        //CERRAR MODAL CON DELEGATION
+        modal.addEventListener('click', function(e){
             e.preventDefault();
 
             //DENTRO DE TODO EL MODAL, SELECCIONAR EL BOTON CANCELAR
             if (e.target.classList.contains('btn-cerrar')) {
 
                 const form = document.querySelector('.formulario');
-                    form.classList.add('cerrar');
+                form.classList.add('cerrar');
                 setTimeout(() => {
                     modal.remove();    
                 }, 500);
  
             }
 
-            //DENTRO DE TODO EL MODAL, SELECCIONAR EL BOTON AÑADIR TAREA
+            //DENTRO DE TODO EL MODAL, SELECCIONAR EL BOTON AÑADIR RED
             if (e.target.classList.contains('btn-submit')) {
 
                 if (edit) {
@@ -290,7 +227,7 @@
                         return;
                     }
                     if (!expresiones.network.test(nameNetWork)) {
-                        showAlert("El nombre debe contener menos de 20 caracteres y acepta '- ó _'", 'error', document.querySelector('.modal-title'));
+                        showAlert("El nombre debe contener menos de 20 caracteres y acepta '-' ó '_'", 'error', document.querySelector('.modal-title'));
                         return;
                     }
  
@@ -312,8 +249,12 @@
                         showAlert("El nombre debe contener menos de 20 caracteres y acepta '- ó _'", 'error', document.querySelector('.modal-title'));
                         return;
                     }
-                    if (!expresiones.octet.test(fioctet) || !expresiones.octet.test(soctet) || !expresiones.octet.test(toctet) || !expresiones.octet.test(fooctet)) {
+                    if (!expresiones.fioctet.test(fioctet) || !expresiones.octet.test(fioctet) || !expresiones.octet.test(soctet) || !expresiones.octet.test(toctet)) {
                         showAlert('Coloca un formato válido para la IP', 'error', document.querySelector('.modal-title'));
+                        return;
+                    }
+                    if (!expresiones.fooctet.test(fooctet)) {
+                        showAlert('El último octeto debe ser 0', 'error', document.querySelector('.modal-title'));
                         return;
                     }
                     

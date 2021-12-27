@@ -6,3 +6,9 @@
 
         <div class="contenido">
             <h2 class="nombre-pagina"><?=$titulo;?></h2>
+            <?php if(isset($titulo_ip)): ?>
+                <h3 class="nombre-ip"><?=$titulo_ip;?></h3>
+            <?php endif; ?>
+            
+            
+            

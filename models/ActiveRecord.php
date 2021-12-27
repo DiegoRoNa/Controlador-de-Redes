@@ -87,6 +87,22 @@ class ActiveRecord {
         return $resultado;
     }
 
+    //INSERTAR EN LA TABLA IPS
+    public static function insertIP($idNetwork, $fioctet, $soctet, $toctet, $fooctet){
+        $query = "INSERT INTO " . static::$tabla . " VALUES (null, ${idNetwork}, ${fioctet}, ${soctet}, ${toctet}, ${fooctet}, '', '', '', '', 0)";
+        $resultado = self::$db->query($query);
+        return $resultado;
+    }
+
+
+    //ELIMINAR REGISTROS POR ID ESPECIFO
+    public static function eliminarEspecifico($columna, $id) {
+        $query = "DELETE FROM "  . static::$tabla . " WHERE ${columna} = ${id}";
+        $resultado = self::$db->query($query);
+        return $resultado;
+    }
+
+
     // SQL para Consultas Avanzadas.
     //Consulta plana de SQL (usar cuando los métodos del modelo no son suficientes)
     public static function SQL($consulta) {

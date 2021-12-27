@@ -30,6 +30,11 @@ CREATE TABLE ips(
     s_octet INT(3),
     t_octet INT(3),
     fo_octet INT(3),
+    host VARCHAR(20),
+    name VARCHAR(40),
+    surnames VARCHAR(80),
+    email VARCHAR(100),
     usingg TINYINT(1),
     FOREIGN KEY (idNetwork) REFERENCES networks (id)
 )ENGINE=INNODB;
+

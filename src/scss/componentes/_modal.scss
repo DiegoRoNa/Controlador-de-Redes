@@ -75,11 +75,18 @@
             }
         }
 
-        &.animar{
+        &.animar,
+        &.animarA{
             position: relative;
-            top: 50%;
             transform: translateY(-70%);//50% del tamaño del modal y lo sube ese 50%
             opacity: 1;
+        }
+
+        &.animar{
+            top: 50%;
+        }
+        &.animarA{
+            top: 68%;
         }
 
         &.cerrar{

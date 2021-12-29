@@ -15,11 +15,9 @@ class Admin extends ActiveRecord{
         $this->email = $args['email'] ?? '';
         $this->password = $args['password'] ?? '';
         $this->password2 = $args['password2'] ?? '';
-        //$this->password_actual = $args['password_actual'] ?? '';
-        //$this->password_nuevo = $args['password_nuevo'] ?? '';
         $this->role = $args['role'] ?? '';
         $this->token = $args['token'] ?? '';
-        $this->confirm = $args['confirm'] ?? 1;
+        $this->confirm = $args['confirm'] ?? 0;
     }
 
 

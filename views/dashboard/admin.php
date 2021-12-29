@@ -15,17 +15,17 @@
 
                         <div class="campo">
                             <label for="s_admin">Super admins</label>
-                            <input type="radio" name="filtro" id="s_admin" value="2">
+                            <input type="radio" name="filtro" id="s_admin" value="s_admin">
                         </div>
 
                         <div class="campo">
                             <label for="admin">Admins</label>
-                            <input type="radio" name="filtro" id="admin" value="1">
+                            <input type="radio" name="filtro" id="admin" value="admin">
                         </div>
 
                         <div class="campo">
                             <label for="guest">Invitados</label>
-                            <input type="radio" name="filtro" id="guest" value="0">
+                            <input type="radio" name="filtro" id="guest" value="guest">
                         </div>
                     </div>
                 </div>
@@ -33,7 +33,10 @@
 
             <!--LOS USUARIOS SE MUESTRAN DESDE JS-->
             <table id="listado-admins" class="table table-dark table-borderless listado-admins">
-                <thead>
+                <!--<thead>
+                    <tr class="table-light">
+                        <th class="fuente-roja">No tienes administradores</th>
+                    </tr>
                     <tr>
                         <th>Nombre</th>
                         <th>Correo</th>
@@ -72,7 +75,7 @@
                             </div>
                         </td>
                     </tr>
-                </tbody>
+                </tbody>-->
             </table>
         </div><!--contenedor-->
 

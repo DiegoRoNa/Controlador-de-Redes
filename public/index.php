@@ -27,10 +27,8 @@ $router->post('/forgot_password', [LoginController::class, 'forgot_password']);
 $router->get('/reestablish', [LoginController::class, 'reestablish']);
 $router->post('/reestablish', [LoginController::class, 'reestablish']);
 
-//NUEVO USUARIO (TEMPORAL)
-$router->get('/register', [LoginController::class, 'register']);
-$router->post('/register', [LoginController::class, 'register']);
-
+//CONFIRMAR CUENTA
+$router->get('/confirm', [LoginController::class, 'confirm']);
 
 //PRIVADA
 //Zona de proyectos DASHBOARD

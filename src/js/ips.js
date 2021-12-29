@@ -62,7 +62,6 @@
             
         } catch (error) {
             console.log(error);
-            
         }
     }
 
@@ -190,7 +189,7 @@
         });
     }
 
-    //FUNCIONES PARA CALCULAR TAREAS PENDIENTES Y COMPLETAS
+    //FUNCIONES PARA CALCULAR IPS EN USO Y SIN USAR
     function totalUnused(){
         //filter(): Creará un arreglo nuevo con las ips que tienen ussing 0 diferente a 1
         const totalUnused = ips.filter( ip => ip.usingg === '0');
@@ -491,7 +490,7 @@
         return network.id;
     }
 
-    //LIMPIAR EL DOM DONDE SE MUESTRAN LAS TAREAS
+    //LIMPIAR EL DOM DONDE SE MUESTRAN LAS IPS
     function cleanIps(){
         const ipList = document.querySelector('#listado-ips');
 

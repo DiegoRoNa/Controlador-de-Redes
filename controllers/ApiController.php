@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Classes\Email;
 use Model\Network;
 use Model\Ip;
 use Model\Admin;
@@ -260,28 +261,166 @@ class ApiController{
 
     //  /api/admins
     public static function select_admins(){
-        echo 'DESDE select_admins';
+
+        //CONSULTAR TODOS LOS ADMINS
+        $admins = Admin::all();
+
+        foreach ($admins as $admin) {
+            unset($admin->password);
+            unset($admin->password2);
+        }
+    
+        //PASAMOS LA SESION
+        $session = $_SESSION;
+
+        echo json_encode([
+            'admins' => $admins,
+            'session' => $session
+        ]);
     }
 
     //  /api/admin
     public static function create_admins(){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            echo 'DESDE create';
+
+            //INSTANCIAR EL OBJETO
+            $admin = new Admin($_POST);
+
+            //VALIDAR QUE NO EXISTA EL ADMIN EN LA BD
+            $adminExists = $admin::where('email', $admin->email);
+
+            if ($adminExists) {
+                $response = [
+                    'type' => 'error',
+                    'message' => 'Ya existe una cuenta vinculada con este correo'
+                ];
+                echo json_encode($response);
+                return;
+            }
+
+            //HASHEAR PASSWORD
+            $admin->hashPassword();
+
+            //ELIMINAR PASSWORD2 DEL OBJETO, YA QUE ACTIVE RECORD TRABAJA CON UN ESPEJO DE LA TABLA EN LA DB
+            unset($admin->password2);
+
+            //GENERAR EL TOKEN
+            $admin->createToken();
+
+            //GUARDAR EN LA BD
+            $result = $admin->guardar();
+
+            //ENVIAR EMAIL
+            $email = new Email($admin->email, $admin->name, $admin->token);
+            $email->enviarConfirmacion($admin->email);
+
+            if ($result) {
+                $response = [
+                    'type' => 'exito',
+                    'title' => 'Admin registrado',
+                    'message' => 'Se ha enviado un correo para confirmar la cuenta, observa la bandeja de entrada, en spam o correos no deseados',
+                    'id' => $result['id'],
+                    'email' => $admin->email,
+                    'token' => $admin->token,
+                    'confirm' => $admin->confirm
+                ];
+                echo json_encode($response);
+            }else{
+                $response = [
+                    'type' => 'error',
+                    'title' => 'ERROR',
+                    'message' => 'Hubo un error al guardar el nuevo admin'
+                ];
+                echo json_encode($response);
+            }
+            
         }
     }
 
     //  /api/admin/update
     public static function update_admins(){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            echo 'DESDE update';
+            //VALIDAR QUE EXISTE EL ADMIN
+            $adminExists = Admin::where('id', $_POST['id']);
+
+            if (!$adminExists) {
+                $response = [
+                    'type' => 'error',
+                    'title' => 'ERROR',
+                    'message' => 'Hay un error, este admin no existe. O fue eliminado desde otra cuenta'
+                ];
+                echo json_encode($response);
+                return;
+            }
+
+            //INSTANCIAR OBJETO
+            $admin = new Admin($_POST);
+            //COLOCAR LA CONTRASEÑA EN EL OBJETO
+            $admin->password = $adminExists->password;
+            unset($admin->password2);
+
+            //GUARDARMOS EN LA BD
+            $result = $admin->guardar();
+
+            //ENVIAMOS RESPUESTA AL FRONTEND
+            if (!$result) {
+                $response = [
+                    'type' => 'error',
+                    'title' => 'ERROR',
+                    'message' => 'Hubo un error al actualizar'
+                ];
+                echo json_encode($response);
+                return;
+            }else{
+                $response = [
+                    'type' => 'exito',
+                    'title' => 'ACTUALIZADO',
+                    'message' => 'Admin actualizado',
+                    'id' => $admin->id
+                ];
+                echo json_encode($response);
+            }
         }
     }
 
     //  /api/admin/delete
     public static function delete_admins(){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            echo 'DESDE delete';
+            //VALIDAR QUE EL ADMIN EXISTE EN LA BD
+            $admin = Admin::where('id', $_POST['id']);
+            if (!$admin) {
+                $response = [
+                    'type' => 'error',
+                    'title' => 'ERROR',
+                    'message' => 'Hubo un error, este admin no existe, pudo ser eliminado desde otra cuenta'
+                ];
+
+                echo json_encode($response);
+                return;
+            }
+
+            $result = $admin->eliminar();
+
+            if (!$result) {
+                $response = [
+                    'type' => 'error',
+                    'title' => 'ERROR',
+                    'message' => 'Hubo un error, no se pudo eliminar la red'
+                ];
+                echo json_encode($response);
+                return;
+            }else{
+                $response = [
+                    'type' => 'exito',
+                    'title' => 'Eliminado',
+                    'message' => 'Admin eliminado correctamente',
+                    'result' => $result
+                ];
+            }
+
+            echo json_encode($response);
         }
     }
 
 }
+

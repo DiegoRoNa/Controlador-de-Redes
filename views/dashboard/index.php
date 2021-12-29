@@ -1,6 +1,6 @@
 <?php include_once __DIR__.'/header-dashboard.php'; ?>
 
-            <div class="contenedor-sm">
+            <div class="contenedor">
 
                 <!-- Boton para apareer modal -->
                 <?php if($_SESSION['role'] === 's_admin' || $_SESSION['role'] === 'admin'): ?>
@@ -11,7 +11,108 @@
                         >&#43; Nueva Red</button>
                     </div>
                 <?php endif; ?>
+                <!--
+<div id="listado-redes" class="listado-redes cards">
+    <div class="card card-contenido" style="background-color: #25deeb;">
+        <h2 class="card-header editar-red">Red 1</h2>
+            <div class="card-body">
+                <h3 class="card-text">192.168.1.0</h3>
+            </div>
+            <div class="card-footer opcion-eliminar">
+                <a href="/network" class=btn-entrar">Entrar</a>
+                <button class="btn-eliminar">Eliminar</button>
+            </div>
+    </div>
 
+    <div class="card card-contenido" style="background-color: rgb(209, 189, 9);;">
+        <h2 class="card-header editar-red">Red 1</h2>
+            <div class="card-body">
+                <h3 class="card-text">192.168.1.0</h3>
+            </div>
+            <div class="card-footer opcion-eliminar">
+                <a href="/network" class=btn-entrar">Entrar</a>
+                <button class="btn-eliminar">Eliminar</button>
+            </div>
+    </div>
+
+    <div class="card card-contenido" style="background-color: #034780;">
+        <h2 class="card-header editar-red">Red 1</h2>
+            <div class="card-body">
+                <h3 class="card-text">192.168.1.0</h3>
+            </div>
+            <div class="card-footer opcion-eliminar">
+                <a href="/network" class=btn-entrar">Entrar</a>
+                <button class="btn-eliminar">Eliminar</button>
+            </div>
+    </div>
+
+    <div class="card card-contenido" style="background-color: #DB2777;">
+        <h2 class="card-header editar-red">Red 1</h2>
+            <div class="card-body">
+                <h3 class="card-text">192.168.1.0</h3>
+            </div>
+            <div class="card-footer opcion-eliminar">
+                <a href="/network" class=btn-entrar">Entrar</a>
+                <button class="btn-eliminar">Eliminar</button>
+            </div>
+    </div>
+
+    <div class="card card-contenido" style="background-color: #F59E0B;">
+        <h2 class="card-header editar-red">Red 1</h2>
+            <div class="card-body">
+                <h3 class="card-text">192.168.1.0</h3>
+            </div>
+            <div class="card-footer opcion-eliminar">
+                <a href="/network" class=btn-entrar">Entrar</a>
+                <button class="btn-eliminar">Eliminar</button>
+            </div>
+    </div>
+
+    <div class="card card-contenido" style="background-color: #7C3AED;">
+        <h2 class="card-header editar-red">Red 1</h2>
+            <div class="card-body">
+                <h3 class="card-text">192.168.1.0</h3>
+            </div>
+            <div class="card-footer opcion-eliminar">
+                <a href="/network" class=btn-entrar">Entrar</a>
+                <button class="btn-eliminar">Eliminar</button>
+            </div>
+    </div>
+
+    <div class="card card-contenido" style="background-color: #f3f4f6;">
+        <h2 class="card-header editar-red">Red 1</h2>
+            <div class="card-body">
+                <h3 class="card-text">192.168.1.0</h3>
+            </div>
+            <div class="card-footer opcion-eliminar">
+                <a href="/network" class=btn-entrar">Entrar</a>
+                <button class="btn-eliminar">Eliminar</button>
+            </div>
+    </div>
+
+    <div class="card card-contenido" style="background-color: #000;">
+        <h2 class="card-header editar-red">Red 1</h2>
+            <div class="card-body">
+                <h3 class="card-text">192.168.1.0</h3>
+            </div>
+            <div class="card-footer opcion-eliminar">
+                <a href="/network" class=btn-entrar">Entrar</a>
+                <button class="btn-eliminar">Eliminar</button>
+            </div>
+    </div>
+
+    <div class="card card-contenido" style="background-color: #198754;">
+        <h2 class="card-header editar-red">Red 1</h2>
+            <div class="card-body">
+                <h3 class="card-text">192.168.1.0</h3>
+            </div>
+            <div class="card-footer opcion-eliminar">
+                <a href="/network" class=btn-entrar">Entrar</a>
+                <button class="btn-eliminar">Eliminar</button>
+            </div>
+    </div>
+</div>
+                -->
                 <!--LAS REDES SE MUESTRAN DESDE JS-->
                 <table id="listado-redes" class="table table-dark table-borderless listado-redes">
                     <!--<thead>
@@ -63,6 +164,6 @@
 include_once __DIR__.'/footer-dashboard.php';
 
 $script .= '
-    <script src="build/js/redes.js"></script>
+<script src="build/js/redes.js"></script>    
 ';
 ?>

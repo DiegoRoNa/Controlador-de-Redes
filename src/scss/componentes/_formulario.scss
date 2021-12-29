@@ -40,7 +40,7 @@
             }
         }
 
-        input{
+        input, select{
             flex: 1;
             padding: 1rem;
             border: none;
@@ -60,6 +60,10 @@
             @include m.tablet {
                 font-weight: 600;
             }
+        }
+
+        select{
+            margin-right: 1rem;
         }
 
         .validacion-estado{

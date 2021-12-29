@@ -16,6 +16,7 @@
         network: /^[a-zA-Z0-9\_\-\s]{1,20}$/
     }
 
+    //boton para mostrar el modal de agregar red
     const btnNewNetwork = document.querySelector('#agregar-red');
     btnNewNetwork.addEventListener('click', function(){
         showForm();
@@ -259,11 +260,10 @@
                     }
                     
                     addNetwork(nameNetWork, fioctet, soctet, toctet, fooctet);
-                }
-                
- 
+                } 
             }
          });
+         
         //AÑADIR AL BODY
         document.querySelector('.dashboard').appendChild(modal);
     }

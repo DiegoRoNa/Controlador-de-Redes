@@ -93,7 +93,7 @@ class LoginController{
 
                     //ENVIAR EMAIL
                     $email = new Email($admin->email, $admin->name, $admin->token);
-                    $email->enviarInstrucciones();
+                    $email->enviarInstrucciones($admin->email);
 
                     //ENVIAR MENSAJE DE EXITO
                     Admin::setAlerta('exito', 'Hemos enviado las instrucciones al correo electrónico para confirmar la cuenta');
@@ -170,47 +170,39 @@ class LoginController{
         ]);
     }
 
-    //  /register
-    public static function register(Router $router){
+
+    //  /confirm
+    public static function confirm(Router $router){
         $_SESSION = [];
         $alertas = [];
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        //LEER EL TOKEN DE LA URL
+        $token = s($_GET['token']);
+        if (!$token) header('Location: /');
 
-            $admin = new Admin($_POST);
+        //BUSCAR AL ADMIN POR EL TOKEN EN LA BD
+        $admin = Admin::where('token', $token);
 
-            if (empty($alertas)) {
-                //COMPROBAR QUE EL CORREO NO EXISTE EN LA BD
-                $adminExists = Admin::where('email', $admin->email);
+        if (empty($admin)) {
+            //NO SE ENCUENTRA UN ADMIN CON ESE TOKEN
+            Admin::setAlerta('error', 'Token no válido');
+        }else{
+            //CONFIRMAR LA CUENTA
+            $admin->confirm = 1;//cambiar confirmado
+            $admin->token = null;//eliminar el token
+            unset($admin->password2);//eliminar el password2
 
-                if ($adminExists) {
-                    var_dump('Ya existe');
-                    exit;
-                }else{
-                    //HASHEAR PASSWORD
-                    $admin->hashPassword();
+            //ACTUALIZAR EN LA BD
+            $admin->guardar();
 
-                    //ELIMINAR PASSWORD2 DEL OBJETO, YA QUE ACTIVE RECORD TRABAJA CON UN ESPEJO DE LA TABLA EN LA DB
-                    unset($admin->password2);
-
-                    //GENERAR EL TOKEN
-                    //$admin->createToken();
-
-                    //GUARDAR EN LA BD
-                    $resultado = $admin->guardar();
-
-                    //REDIRECCIONAR
-                    if ($resultado) {
-                        header('Location: /');
-                    }
-
-                }
-            }
-            
+            // MENSAJE DE EXITO
+            Admin::setAlerta('exito', 'Cuenta confirmada correctamente');
         }
 
-        $router->render('login/register', [
-            'titulo' => 'Registrar usuario',
+        $alertas = Admin::getAlertas();
+
+        $router->render('login/confirm', [
+            'titulo' => 'Confirmar cuenta',
             'alertas' => $alertas
         ]);
     }

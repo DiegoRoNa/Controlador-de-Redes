@@ -1,0 +1,124 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+//ESTILOS DE LAS CARDS
+
+.cards{
+    margin-top: 2rem;
+
+    @include m.tablet {
+        @include m.grid(2, 2rem);
+    }
+
+    @include m.desktop {
+        @include m.grid(3, 2rem);
+    }
+
+    .card-contenido{
+        margin: 2rem 0;
+        text-align: center;
+
+        @include m.tablet {
+            margin: 0;
+        }
+    }
+
+    h2{
+        font-size: 3.5rem;
+    }
+
+    h3{
+        font-size: 2.7rem;
+        @include m.tablet {
+            font-size: 3rem;
+        }
+    }
+
+    h2, h3{
+        @include m.textoDegradado(v.$grisClaro);
+    }
+
+    .card-0{
+        @include m.fondoDegradadoOscuro(v.$rojo);
+    }
+    .card-1{
+        @include m.fondoDegradadoOscuro(v.$azulClaro);
+        h2, h3{
+            @include m.textoDegradado(v.$negroMate);
+        }
+    }
+    .card-2{
+        @include m.fondoDegradadoOscuro(v.$amarillo);
+    }
+    .card-3{
+        @include m.fondoDegradadoOscuro(v.$azul);
+    }
+    .card-4{
+        @include m.fondoDegradadoOscuro(v.$rosa);
+    }
+    .card-5{
+        @include m.fondoDegradadoOscuro(v.$grisOscuro);
+    }
+    .card-6{
+        @include m.fondoDegradadoOscuro(v.$naranja);
+    }
+    .card-7{
+        @include m.fondoDegradadoOscuro(v.$grisClaro);
+        h2, h3{
+            @include m.textoDegradado(v.$grisOscuro);
+        }
+    }
+    .card-8{
+        @include m.fondoDegradadoOscuro(v.$morado);
+    }
+    .card-9{
+        @include m.fondoDegradadoOscuro(v.$verdeClaro);
+        h2, h3{
+            @include m.textoDegradado(v.$blanco);
+        }
+    }
+
+    .editar-red{
+        transition: all 300ms ease;
+        &:hover{
+            cursor: pointer;
+            font-size: 4.5rem;
+        }
+    }
+
+    .opcion{
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;            
+
+        .btn-entrar,
+        .btn-eliminar{
+            
+            cursor: pointer;
+            border-radius: 1rem;
+            padding: .7rem 2.5rem;
+            font-size: 1.3rem;
+            border: none;
+
+            @include m.telefono {
+                border-radius: 1rem;
+                font-size: 1.4rem;
+            }
+
+            @include m.desktop {
+                font-size: 1.7rem;
+                border-radius: 1rem;
+                padding: .5rem 2.5rem;
+            }
+        }
+
+        .btn-entrar{
+            @include m.colorBoton(v.$azulFuerte, v.$blanco);
+        }
+
+        .btn-eliminar{
+            @include m.colorBoton(v.$rojo, v.$blanco);
+        }
+    }
+}

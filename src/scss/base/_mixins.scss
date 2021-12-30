@@ -36,19 +36,18 @@
 }
 
 @mixin textoDegradado($color){
-    background: linear-gradient(to left, $color 0%, lighten($color, 20%) 100%); //degradado
+    background: linear-gradient(to left, $color 0%, darken($color, 60%) 100%); //degradado
     color: transparent; //desaparece el text
     background-clip: text; //agrega el degradado al texto
-    font-size: 7rem;
-    text-align: center;
-
-    @include tablet {
-        font-size: 10rem;
-    }
 }
 
 @mixin fondoDegradado($color){
     background: linear-gradient(to right, $color 0%, lighten($color, 40%) 100%); //degradado
+    background-clip: content-box; //agrega el degradado al texto
+}
+
+@mixin fondoDegradadoOscuro($color){
+    background: linear-gradient(to right, $color 0%, darken($color, 40%) 100%); //degradado
     background-clip: content-box; //agrega el degradado al texto
 }
 

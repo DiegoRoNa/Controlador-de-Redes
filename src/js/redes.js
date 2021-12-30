@@ -57,61 +57,48 @@
 
         //SI EL ARREGLO ESTÁ VACIO
         if (arrayNetworks.length === 0) {
-            const containerNetworks = document.querySelector('#listado-redes');//table
-            const noNetsTHEAD = document.createElement('THEAD');
-            const noNetsTR = document.createElement('TR');
-            noNetsTR.classList.add('table-light');
-            const noNetsTH = document.createElement('TH');
-            noNetsTH.classList.add('fuente-roja');
-            noNetsTH.textContent = 'No hay redes creadas';
+            const containerPrincipal = document.querySelector('.contenedor');
+            const noNets = document.createElement('DIV');//div
+            noNets.classList.add('descripcion-pagina');
+            const noNetsH2 = document.createElement('H2');
+            noNetsH2.classList.add('fuente-roja');
+            noNetsH2.textContent = 'No hay redes creadas';
 
-            noNetsTR.appendChild(noNetsTH);
-            noNetsTHEAD.appendChild(noNetsTR)
-            containerNetworks.appendChild(noNetsTHEAD);
+            noNets.appendChild(noNetsH2);
+            containerPrincipal.appendChild(noNets)
             return;
         }
 
-        //SI EL ARREGLO TIENE REDES
-        //CREAR Y LLENAR LA TABLA
-        //CREAMOS EL THEAD
-        const netsTHEAD = document.createElement('THEAD');
-        const trHead = document.createElement('TR');
-        const thHeadNetwork = document.createElement('TH');
-        thHeadNetwork.textContent = 'Red';
-        const thHeadIP = document.createElement('TH');
-        thHeadIP.textContent = 'IP Global';
-        const thHeadDelete = document.createElement('TH');
-        trHead.appendChild(thHeadNetwork);
-        trHead.appendChild(thHeadIP);
-        trHead.appendChild(thHeadDelete);
-        netsTHEAD.appendChild(trHead);
-        const netsTBODY = document.createElement('TBODY');
-
         //RECORRER EL OBJETO Y MOSTRAR LA INFORMACION DE CADA RED
         arrayNetworks.forEach(network => {
-            //CREAR TR DEL BODY
-            const trBody = document.createElement('TR');
-            trBody.dataset.networkId = network.id;
-
-            //CREAR LOS TD
-            const tdNetwork = document.createElement('TD');
-            tdNetwork.textContent = network.network;
-            tdNetwork.classList.add('editar-red');
             
+            //CREAR EL DIV DE CADA CARD
+            const cardNetwork = document.createElement('DIV');
+            cardNetwork.classList.add('card', 'card-contenido', 'card-'+giveColor(network.id));
+            cardNetwork.dataset.networkId = network.id;
+
+            //CREAR EL H2 DE LAS CARDS
+            const cardH2 = document.createElement('H2');
+            cardH2.classList.add('card-header', 'editar-red');
+            cardH2.textContent = network.network;
+
             //VALIDAR QUE SOLO SUPER ADMIN Y ADMIN PUEDEN EDITAR LA RED
             if (admin.role === 's_admin' || admin.role === 'admin') {
-                tdNetwork.addEventListener('click', function(){
+                cardH2.addEventListener('click', function(){
                     showForm(true, {...network});
                 });
             }
 
-            const tdIp = document.createElement('TD');
-            tdIp.textContent = network.fi_octet+'.'+network.s_octet+'.'+network.t_octet+'.'+network.fo_octet;
+            //CREAR EL BODY DE LAS CARD
+            const cardBody = document.createElement('DIV');
+            cardBody.classList.add('card-body');
+            const cardBodyH3 = document.createElement('H3');
+            cardBodyH3.classList.add('card-text');
+            cardBodyH3.textContent = network.fi_octet+'.'+network.s_octet+'.'+network.t_octet+'.'+network.fo_octet;
 
             //CONTENEDOR DE LOS BOTONES ENTRAR Y ELIMINAR
-            const tdButton = document.createElement('TD');
-            const deleteOption = document.createElement('DIV');
-            deleteOption.classList.add('opcion-eliminar');
+            const cardFooter = document.createElement('DIV');
+            cardFooter.classList.add('card-footer', 'opcion');
 
             //BOTON ENTRAR
             const btnEntrar = document.createElement('A');
@@ -124,32 +111,30 @@
             btnDelete.classList.add('btn-eliminar');
             btnDelete.dataset.idNetwork = network.id;
             btnDelete.textContent = 'Eliminar';
-            btnDelete.onclick = function(){
-                confirmDeleteNetwork({...network});
+            if (admin.role === 's_admin' || admin.role === 'admin') {
+                btnDelete.onclick = function(){
+                    confirmDeleteNetwork({...network});
+                }
             }
-            
 
-            //AGREGAR EL BUTTON AL DIV
-            deleteOption.appendChild(btnEntrar);
+            //AGREGAR EL BODY Y FOOTER A LA CARD
+            cardBody.appendChild(cardBodyH3);
+            cardFooter.appendChild(btnEntrar);
 
             //VALIDAR QUE SOLO SUPER ADMIN Y ADMIN PUEDEN BORRAR LA RED
             if (admin.role === 's_admin' || admin.role === 'admin') {
-                deleteOption.appendChild(btnDelete);
+                cardFooter.appendChild(btnDelete);
             }
-            tdButton.appendChild(deleteOption);
 
-            //AGREGAR LOS TD AL TR
-            trBody.appendChild(tdNetwork);
-            trBody.appendChild(tdIp);
-            trBody.appendChild(tdButton);
-
-            //AGREGAR EL TR AL TBODY
-            netsTBODY.appendChild(trBody);
-
-            //AGREGAR EL THEAD Y TBODY AL TABLE
+            //AGREGAR LOS ELEMENTOS DE LA CARD A LA CARD
+            cardNetwork.appendChild(cardH2);
+            cardNetwork.appendChild(cardBody);
+            cardNetwork.appendChild(cardFooter);
+            
+            //AGREGAR LA CARD AL LISTADO
             const containerNetworks = document.querySelector('#listado-redes');//table
-            containerNetworks.appendChild(netsTHEAD);
-            containerNetworks.appendChild(netsTBODY);
+            containerNetworks.appendChild(cardNetwork);
+            
         });
     }
 
@@ -294,6 +279,15 @@
 
     //CONSULTAR API, PARA AÑADIR UNA NUEVA RED
     async function addNetwork(network, fioctet, soctet, toctet, fooctet){
+        //QUITAR EL FORMULARIO
+        const modal = document.querySelector('.modals');
+        setTimeout(() => {
+            modal.remove();
+        }, 0);
+
+        //MOSTRAR EL AWAIT
+        showWait();
+
         //formdata siempre se usa para hacer peticiones
         const data = new FormData();
 
@@ -316,16 +310,16 @@
             //OBTENER LA RESPUESTA DEL BACKEND (API)
             const response = await result.json();
 
-            //MOSTRAR ALERTA DE ERROR O EXITO
-            showAlert(response.message, response.type, document.querySelector('.modal-title'));
-
             if (response.type === 'error') {
                 return;
             }else {
                 const modal = document.querySelector('.modals');
                 setTimeout(() => {
                     modal.remove();
-                }, 2000);
+                }, 0);
+
+                //MOSTRAR MENSAJE DE EXITO
+                Swal.fire('Correcto', response.message, 'success');
             }
                 
 
@@ -478,6 +472,22 @@
     }
 
 
+    //FUNCION DE MOSTRAR ESPERA
+    function showWait(){
+        const modal = document.createElement('DIV');
+        modal.classList.add('modals');
+        modal.innerHTML = `
+            <div class="wait-contenido">
+                <div class="spinner-border text-light wait" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+            </div>            
+        `;
+
+        //AÑADIR AL BODY
+        document.querySelector('.dashboard').appendChild(modal);
+    }
+
 
     //LIMPIAR EL DOM DONDE SE MUESTRAN LAS REDES
     function cleanNetworks(){
@@ -486,5 +496,15 @@
         while (networkList.firstChild) {//mientras haya elementos
             networkList.removeChild(networkList.firstChild);//elimina el primer elemento
         }
+    }
+
+    //DAR CLASE A LAS CARDS DE LAS REDES
+    function giveColor(id){
+        const idNet = id;
+        const digits = idNet.toString().split('');
+        const realDigits = digits.map(Number);
+        const lastDigit = realDigits[realDigits.length-1];
+
+        return lastDigit;
     }
 })();//este (), ejecuta esta funcion inmediatamente

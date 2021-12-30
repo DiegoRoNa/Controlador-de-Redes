@@ -94,4 +94,19 @@
             opacity: 0;
         }
     }
+
+    .wait-contenido{
+
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .wait{
+            margin: 0px auto;
+            min-width: 10rem;
+            min-height: 10rem;
+        }
+    }
+    
 }

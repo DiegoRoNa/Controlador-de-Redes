@@ -26,13 +26,13 @@ class Email{
         $mail->isSMTP();
         $mail->SMTPAuth = true;
         $mail->SMTPSecure = 'tls';
-        $mail->Host = 'smtp.live.com';
-        $mail->Port = 25;
-        $mail->Username = 'diegorn.10@hotmail.com';
-        $mail->Password = 'bnbzthwwvbhzxcls';
+        $mail->Host = 'smtp.mailtrap.io';
+        $mail->Port = 2525;
+        $mail->Username = '6af1d46c425e21';
+        $mail->Password = '48839d180320e5';
 
         //CONFIGURAR EL CONTENIDO DEL EMAIL
-        $mail->setFrom('diegorn.10@hotmail.com');//Quien envía el email
+        $mail->setFrom('controladorredes@controlador.com');//Quien envía el email
         $mail->addAddress($email, 'Controlador Redes');//A quien se envía el email
         $mail->Subject = 'Confirmar cuenta';//Mensaje que aparece en el email
 
@@ -164,10 +164,10 @@ class Email{
         $mail->isSMTP();
         $mail->SMTPAuth = true;
         $mail->SMTPSecure = 'tls';
-        $mail->Host = 'smtp.live.com';
-        $mail->Port = 25;
-        $mail->Username = 'diegorn.10@hotmail.com';
-        $mail->Password = 'bnbzthwwvbhzxcls';
+        $mail->Host = 'smtp.mailtrap.io';
+        $mail->Port = 2525;
+        $mail->Username = '6af1d46c425e21';
+        $mail->Password = '48839d180320e5';
 
         //CONFIGURAR EL CONTENIDO DEL EMAIL
         $mail->setFrom('diegorn.10@hotmail.com');//Quien envía el email

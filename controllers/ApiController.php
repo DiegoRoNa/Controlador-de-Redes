@@ -6,8 +6,6 @@ use Classes\Email;
 use Model\Network;
 use Model\Ip;
 use Model\Admin;
-use Model\Host;
-use Model\Hostip;
 
 class ApiController{
 
@@ -28,64 +26,81 @@ class ApiController{
 
     //  /api/network
     public static function create_networks(){
+
+        $alertas = [];
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
             //INSTANCIAR OBJETO DE RED
             $network = new Network($_POST);
 
-            //VALIDAR QUE NO EXISTA LA IP EN LA BD
-            $existsNetwork = Network::existsIP($_POST['fi_octet'], $_POST['s_octet'], $_POST['t_octet'], $_POST['fo_octet']);
-            if ($existsNetwork) {
+            //VALIDAR FORM
+            $alertas = $network->validateCreateNetwork();
+            
+            if (empty($alertas)) {
+                //VALIDAR QUE NO EXISTA LA IP EN LA BD
+                $existsNetwork = Network::existsIP($_POST['fi_octet'], $_POST['s_octet'], $_POST['t_octet'], $_POST['fo_octet']);
+                if ($existsNetwork) {
+                    $response = [
+                        'type' => 'error',
+                        'message' => 'Esta red ya existe'
+                    ];
+                    echo json_encode($response);
+                    return;
+                }
+
+                //GENERAR LA URL UNICA
+                $hash = md5( uniqid() );//32bits
+                $network->url = $hash;
+
+                //GUARDAR LA RED
+                $result = $network->guardar();
+
+                //RED CREADA
+                $network = Network::where('id', $result['id']);
+
+                //INSERTAR LAS IP DE LA RED CREADA
+                for ($fooctet=1; $fooctet <=255; $fooctet++) { 
+                    $resultIP = Ip::insertIP($network->id, $network->fi_octet, $network->s_octet, $network->t_octet, $fooctet);
+                }
+                
+                if (!$result || !$resultIP) {
+                    $response = [
+                        'type' => 'error',
+                        'message' => 'Hubo un error al crear la Red'
+                    ];
+                }
+
                 $response = [
-                    'type' => 'error',
-                    'message' => 'Esta red ya existe'
+                    'type' => 'exito',
+                    'message' => 'Red creada correctamente',
+                    'id' => $result['id'],
+                    'result' => $result['resultado'],
+                    'url' => $network->url
                 ];
                 echo json_encode($response);
-                return;
-            }
+            }else{
+                foreach ($alertas as $alerta) {
+                    foreach ($alerta as $messages) {
+                        $message = $messages;
+                    }
+                }
 
-            //VALIDAR QUE EL ULTIMO OCTETO ES 0
-            if ($_POST['fo_octet'] !== 0) {
                 $response = [
                     'type' => 'error',
-                    'message' => 'Hubo un error al crear la Red'
+                    'message' => $message
                 ];
+
+                echo json_encode($response);
             }
-
-            //GENERAR LA URL UNICA
-            $hash = md5( uniqid() );//32bits
-            $network->url = $hash;
-
-            //GUARDAR LA RED
-            $result = $network->guardar();
-
-            //RED CREADA
-            $network = Network::where('id', $result['id']);
-
-            //INSERTAR LAS IP DE LA RED CREADA
-            for ($fooctet=1; $fooctet <=255; $fooctet++) { 
-                $resultIP = Ip::insertIP($network->id, $network->fi_octet, $network->s_octet, $network->t_octet, $fooctet);
-            }
-            
-            if (!$result || !$resultIP) {
-                $response = [
-                    'type' => 'error',
-                    'message' => 'Hubo un error al crear la Red'
-                ];
-            }
-
-            $response = [
-                'type' => 'exito',
-                'message' => 'Red creada correctamente',
-                'id' => $result['id'],
-                'result' => $result['resultado'],
-                'url' => $network->url
-            ];
-            echo json_encode($response);
         }
     }
 
     //  /api/network/update
     public static function update_networks(){
+
+        $alertas = [];
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             //VALIDAR QUE LA RED EXISTE
@@ -100,28 +115,47 @@ class ApiController{
                 return;
             }
 
-            //INSTANCIAR NUEVO OBJETO
-            $network = new Network($_POST);
+            $alertas = $network->validateUpdateNetwork();
 
-            //GUARDARMOS EN LA BD
-            $result = $network->guardar();
+            if (empty($alertas)) {
+                //INSTANCIAR NUEVO OBJETO
+                $network = new Network($_POST);
 
-            //ENVIAMOS RESPUESTA AL FRONTEND
-            if (!$result) {
+                //GUARDARMOS EN LA BD
+                $result = $network->guardar();
+
+                //ENVIAMOS RESPUESTA AL FRONTEND
+                if (!$result) {
+                    $response = [
+                        'type' => 'error',
+                        'message' => 'Hubo un error al actualizar'
+                    ];
+                    echo json_encode($response);
+                    return;
+                }else{
+                    $response = [
+                        'type' => 'exito',
+                        'message' => 'Red actualizada',
+                        'id' => $network->id
+                    ];
+                    echo json_encode($response);
+                }
+            }else{
+                foreach ($alertas as $alerta) {
+                    foreach ($alerta as $messages) {
+                        $message = $messages;
+                    }
+                }
+
                 $response = [
                     'type' => 'error',
-                    'message' => 'Hubo un error al actualizar'
+                    'message' => $message
                 ];
-                echo json_encode($response);
-                return;
-            }else{
-                $response = [
-                    'type' => 'exito',
-                    'message' => 'Red actualizada',
-                    'id' => $network->id
-                ];
+
                 echo json_encode($response);
             }
+
+            
             
         }
     }

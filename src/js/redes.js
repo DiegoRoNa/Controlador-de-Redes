@@ -216,16 +216,17 @@
                         showAlert("El nombre debe contener menos de 20 caracteres y acepta '-' ó '_'", 'error', document.querySelector('.modal-title'));
                         return;
                     }
- 
+                    
                     network.network = nameNetWork;
                     editNetwork(network);                    
                 }else{
+                    
                     const nameNetWork = document.querySelector('#network').value.trim();
                     const fioctet = document.querySelector('#fioctet').value.trim();
                     const soctet = document.querySelector('#soctet').value.trim();
                     const toctet = document.querySelector('#toctet').value.trim();
                     const fooctet = document.querySelector('#fooctet').value.trim();
-        
+
                     //VALIDAR EL FORMULARIO
                     if (nameNetWork === '' || fioctet === '' || soctet === '' || toctet === '' || fooctet === '') {
                         showAlert('Completa correctamente el formulario', 'error', document.querySelector('.modal-title'));
@@ -235,7 +236,7 @@
                         showAlert("El nombre debe contener menos de 20 caracteres y acepta '- ó _'", 'error', document.querySelector('.modal-title'));
                         return;
                     }
-                    if (!expresiones.fioctet.test(fioctet) || !expresiones.octet.test(fioctet) || !expresiones.octet.test(soctet) || !expresiones.octet.test(toctet)) {
+                    if (!expresiones.fioctet.test(fioctet) || !expresiones.octet.test(fioctet) || !expresiones.octet.test(soctet) || !expresiones.octet.test(toctet) || !expresiones.octet.test(fooctet)) {
                         showAlert('Coloca un formato válido para la IP', 'error', document.querySelector('.modal-title'));
                         return;
                     }
@@ -311,6 +312,13 @@
             const response = await result.json();
 
             if (response.type === 'error') {
+                //MOSTRAR MENSAJE DE EXITO
+                Swal.fire('ERROR', response.message, 'error');
+                //QUITAR EL FORMULARIO
+                const modal = document.querySelector('.modals');
+                setTimeout(() => {
+                    modal.remove();
+                }, 0);
                 return;
             }else {
                 const modal = document.querySelector('.modals');
@@ -376,7 +384,16 @@
             //OBTENER LA RESPUESTA DEL BACKEND
             const result = await response.json();
 
-            if (result.type === 'exito') {
+            if (result.type === 'error') {
+                //MOSTRAR MENSAJE DE ERROR
+                Swal.fire('ERROR', response.message, 'error');
+                //QUITAR EL FORMULARIO
+                const modal = document.querySelector('.modals');
+                setTimeout(() => {
+                    modal.remove();
+                }, 0);
+                return;
+            }else{
                 Swal.fire(
                     'Actualizado',
                     result.message,

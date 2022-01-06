@@ -139,7 +139,7 @@ class Email{
                             $contenido .='<h3>Hola '. $this->nombre .', se ha creado tu cuenta en el Controlador de Redes</h3>';
                             $contenido .="<p>Presiona en el siguiente botón para confirmar la cuenta:</p>      
                                 <div class='boton'>
-                                    <a class='button' href='http://localhost:8000/confirm?token=" . $this->token . "'>Confirmar cuenta</a>
+                                    <a class='button' href='http://diegorona.com.devel/confirm?token=" . $this->token . "'>Confirmar cuenta</a>
                                 </div>
                                 <p class='no'>Si tú no hiciste la solicitud, o ya tienes tu cuenta confirmada ignora este mensaje</p>
                             </div>
@@ -277,7 +277,7 @@ class Email{
                             $contenido .='<h3>Hola '. $this->nombre .', has solicitado cambiar tu contraseña</h3>';
                             $contenido .="<p>Presiona en el siguiente botón para continuar con el procedimiento:</p>      
                                 <div class='boton'>
-                                    <a class='button' href='http://localhost:8000/reestablish?token=" . $this->token . "'>Reestablecer contraseña</a>
+                                    <a class='button' href='http://diegorona.com.devel/reestablish?token=" . $this->token . "'>Reestablecer contraseña</a>
                                 </div>
                                 <p class='no'>Si tú no hiciste la solicitud, ignora el mensaje</p>
                             </div>

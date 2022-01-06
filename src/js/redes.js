@@ -26,8 +26,9 @@
     async function getNetworks(){
         //CONECTAR A LA API
         try {
+            
             //PRIMER await: CONEXION A LA API
-            const url = 'http://localhost:8000/api/networks';
+            const url = 'http://diegorona.com.devel/api/networks';
             const result = await fetch(url);
 
             //OBTENER RESPUESTA DE LA API
@@ -302,7 +303,7 @@
         //SIEMPRE USAR TRY-CATCH PARA HACER CONEXIONES WEBSERVICE
         try {
             //PRIMER await: CONEXION A LA API
-            const url = 'http://localhost:8000/api/network';
+            const url = 'http://diegorona.com.devel/api/network';
             const result = await fetch(url, {
                 method: 'POST',
                 body: data
@@ -375,7 +376,7 @@
 
         //CONEXION A LA API
         try {
-            const url = 'http://localhost:8000/api/network/update';
+            const url = 'http://diegorona.com.devel/api/network/update';
             const response = await fetch(url, {
                 method: 'POST',
                 body: data
@@ -459,7 +460,7 @@
 
         //CONECTAR CON LA API PARA ELIMINAR
         try {
-            const url = 'http://localhost:8000/api/network/delete';
+            const url = 'http://diegorona.com.devel/api/network/delete';
             const response = await fetch(url, {
                 method: 'POST',
                 body: data

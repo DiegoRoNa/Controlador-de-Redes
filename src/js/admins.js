@@ -62,7 +62,7 @@
     async function getAdmins(){
         try {
             //PRIMER await: CONEXION A LA API
-            const url = 'http://localhost:8000/api/admins';
+            const url = 'http://diegorona.com.devel/api/admins';
             const result = await fetch(url);
 
             //RESPUESTA DE LA API
@@ -421,7 +421,7 @@
         //SIEMPRE USAR TRY-CATCH PARA HACER CONEXIONES WEBSERVICE
         try {
             //PRIMER await: CONEXION A LA API
-            const url = 'http://localhost:8000/api/admin';
+            const url = 'http://diegorona.com.devel/api/admin';
             const response = await fetch(url, {
                 method: 'POST',
                 body: data
@@ -500,7 +500,7 @@
          */
 
         try {
-            const url = 'http://localhost:8000/api/admin/update';
+            const url = 'http://diegorona.com.devel/api/admin/update';
             const response = await fetch(url, {
                 method: 'POST',
                 body: data
@@ -578,7 +578,7 @@
 
         //CONECTAR CON LA API PARA ELIMINAR
         try {
-            const url = 'http://localhost:8000/api/admin/delete';
+            const url = 'http://diegorona.com.devel/api/admin/delete';
             const response = await fetch(url, {
                 method: 'POST',
                 body: data

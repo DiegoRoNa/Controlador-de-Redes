@@ -48,7 +48,7 @@
             const id = getNetworkId();
             
             //PRIMER await: CONEXION A LA API
-            const url = `http://localhost:8000/api/ips?id=${id}`;
+            const url = `http://diegorona.com.devel/api/ips?id=${id}`;
             const result = await fetch(url);
 
             //OBTENER RESPUESTA DE LA API
@@ -421,7 +421,7 @@
         //SIEMPRE USAR TRY-CATCH PARA HACER CONEXIONES WEBSERVICE
         try {
             //PRIMER await: CONEXION A LA API
-            const url = 'http://localhost:8000/api/host';
+            const url = 'http://diegorona.com.devel/api/host';
             const result = await fetch(url, {
                 method: 'POST',
                 body: data

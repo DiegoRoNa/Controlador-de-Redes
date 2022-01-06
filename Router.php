@@ -24,11 +24,11 @@ class Router
     //COMPROBACION SI EXISTEN LAS RUTAS/URL
     public function comprobarRutas()
     {
-
+        
         // Iniciar sesion y Proteger Rutas...
         session_start();
 
-        $currentUrl = $_SERVER['PATH_INFO'] ?? '/';//ruta actual de la URL
+        $currentUrl = getPathInfo() ?? '/';//ruta actual de la URL
         $method = $_SERVER['REQUEST_METHOD'];//metodo
         
         //SI EL METODO ES GET

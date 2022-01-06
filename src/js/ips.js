@@ -1,37 +1,35 @@
-//IIFE
 
-//TODO DENTRO DE ESTE CALLBACK, SE PROTEGE, ES DECIR:
-//TOAS VARIABLES Y FUNCIONES DEFINIDAS EN ESTE ARCHIVO, NO PUEDEN SER EJECUTADAS DESDE OTRO
 (function(){
+
+    const host = '';
+
     //MOSTRAR LAS IPS
     getIps();
 
-    let ips = [];//DOM VIRTUAL: PASO 1
-    let filtered = [];//arreglo para los filtros
+    let ips = [];
+    let filtered = [];
     let admin = [];
 
     //EXPRESION REGULAR PARA LOS INPUT DE LOS FORMULARIOS
     const expressions = {
-        host: /^[a-zA-Z0-9\_\-\s]{1,20}$/, // Letras, numeros, guion y guion_bajo
-        name: /^[a-zA-ZÀ-ÿ\s]{1,40}$/, // Letras y espacios, pueden llevar acentos.
-        surnames: /^[a-zA-ZÀ-ÿ\s]{1,80}$/, // Letras y espacios, pueden llevar acentos.
+        host: /^[a-zA-Z0-9\_\-\s]{1,20}$/,
+        name: /^[a-zA-ZÀ-ÿ\s]{1,40}$/,
+        surnames: /^[a-zA-ZÀ-ÿ\s]{1,80}$/,
         email: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
     }
 
     //FILTROS DE BUSQUEDA
     const filters = document.querySelectorAll('#filtros input[type="radio"]');
-
-    //Hiterar sobre los input para añadirles un evento
     filters.forEach( radio => {
         radio.addEventListener('input', filterIP);
     });
+
     function filterIP(e){
-        //VALUE DE LOS INPUT
+        
         const filter = e.target.value;
         
         //Si el filtro es direfente a TODAS
         if (filter !== '') {
-            //FILTER: Hiteramos y creamos un nuevo arreglo con cada tarea por el estado 
             filtered = ips.filter( ip => ip.usingg === filter);
         }else{
             filtered = [];
@@ -42,20 +40,16 @@
 
     //FUNCION PARA CONSULTAR LAS IPS A LA API
     async function getIps(){
-        //CONECTAR A LA API
+
         try {
             //OBTENER RED
             const id = getNetworkId();
             
-            //PRIMER await: CONEXION A LA API
-            const url = `http://diegorona.com.devel/api/ips?id=${id}`;
+            const url = host+`/api/ips?id=${id}`;
             const result = await fetch(url);
 
-            //OBTENER RESPUESTA DE LA API
-            const response = await result.json();//OBJECT
+            const response = await result.json();
 
-            //DOM VIRTUAL: PASO 2
-            //ASIGNAR LAS IPS EN EL ARREGLO DECLARADO AL INICIO
             ips = response.ips;
             admin = response.session;
             showIps();
@@ -66,17 +60,13 @@
     }
 
     function showIps(){
-        //DOM VIRTUAL: PASO 5
-        //Limipiar el html donde se muentran las IPS
+
         cleanIps();
 
         //CALCULAR IPS EN UNO Y SIN USAR
         totalUnused();
         totalUsing();
 
-        //ASGINAMOS EL ARREGLO QUE CORRESPONDA AL FILTRO
-        //SI filtered CONTIENE ALGO, arrayIps CONTIENE EL VALOR DE filtered
-        //SI NO, CONTIENE EL VALOR DE ips
         const arrayIps = filtered.length ? filtered : ips;
         
         //ESTADO usingg PARA LAS ips
@@ -108,7 +98,6 @@
         const ipsTBODY = document.createElement('TBODY');
         
 
-        //RECORRER EL OBJETO arrayIps Y MOSTRAR LA INFORMACION DE CADA ip
         arrayIps.forEach( ip => {
             
             //CREAR TR DEL BODY
@@ -191,9 +180,9 @@
 
     //FUNCIONES PARA CALCULAR IPS EN USO Y SIN USAR
     function totalUnused(){
-        //filter(): Creará un arreglo nuevo con las ips que tienen ussing 0 diferente a 1
+        
         const totalUnused = ips.filter( ip => ip.usingg === '0');
-        const unusedRadio = document.querySelector('#sin-uso');//radio de sin usar
+        const unusedRadio = document.querySelector('#sin-uso');
 
         //validar si hay elementos en el arreglo de totalUnused
         if (totalUnused.length === 0) {
@@ -203,9 +192,9 @@
         }
     }
     function totalUsing(){
-        //filter(): Creará un arreglo nuevo con las ips que tienen ussing 1 diferente a 0
+
         const totalUsing = ips.filter( ip => ip.usingg === '1');
-        const usingRadio = document.querySelector('#usando');//radio de usando
+        const usingRadio = document.querySelector('#usando');
 
         //validar si hay elementos en el arreglo de totalUsing
         if (totalUsing.length === 0) {
@@ -273,7 +262,6 @@
             form.classList.add('animar');
         }, 0);
 
-        //CERRAR MODAL CON DELEGATION
         modal.addEventListener('click', function(e){
             e.preventDefault();
 
@@ -317,7 +305,6 @@
                     return;
                 }
 
-
                 //EVALUAR SI SE ESTA EDITANDO O CREANDO NUEVO HOST
                 if (edit) {
                     ip.host = nameHost;
@@ -332,7 +319,6 @@
                     ip.email = emailUser;
                     changeUsingg(ip);
                 }
-                
             }
         });
         
@@ -363,8 +349,6 @@
             alert.remove();
         }, 5000);
     }
-
-
     
     //CONFIRMAR DEJAR DE USAR LA IP
     function confirmStopUsing(ip){
@@ -374,7 +358,7 @@
             confirmButtonText: 'Sí',
             cancelButtonText: 'No'
         }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
+            
             if (result.isConfirmed) {
                 ip.host = '';
                 ip.name = '';
@@ -385,26 +369,21 @@
         });
     }
 
-
     //CAMBIAR EL ESTADO USINGG DE LA IP
     function changeUsingg(ip){
-        //SI estado ES IGUAL A 1, PONLO EN 0, SI NO ES IGUAL A 1, PONLO EN 1
+        
         const newUsingg = ip.usingg === "1" ? "0" : "1";
         ip.usingg = newUsingg;
         addHost(ip);
+
     }
-
-
 
     //FUNCION PARA AGREGAR EL HOST
     async function addHost(ip){
 
         const { id, idNetwork, fi_octet, s_octet, t_octet, fo_octet, host, name, surnames, email, usingg } = ip;
         
-        //formdata siempre se usa para hacer peticiones
         const data = new FormData();
-
-        //Agregar la informacion a formData para enviar al BACKEND
         data.append('id', id);
         data.append('idNetwork', idNetwork);
         data.append('fi_octet', fi_octet);
@@ -418,16 +397,15 @@
         data.append('usingg', usingg);
         data.append('url', getNetworkId());
 
-        //SIEMPRE USAR TRY-CATCH PARA HACER CONEXIONES WEBSERVICE
+        //CONECTAR A LA API
         try {
-            //PRIMER await: CONEXION A LA API
-            const url = 'http://diegorona.com.devel/api/host';
+
+            const url = host+'/api/host';
             const result = await fetch(url, {
                 method: 'POST',
                 body: data
             });
 
-            //OBTENER LA RESPUESTA DEL BACKEND (API)
             const response = await result.json();
 
             if (response.type === 'exito') {
@@ -444,7 +422,7 @@
                 }
 
                 //ACTUALIZAR LA IP EN TIEMPO REAL DOM VIRTUAL
-                ips = ips.map(memoryIP => {//hiteramos el arreglo para crear uno nuevo
+                ips = ips.map(memoryIP => {
                     //Evaluar si el id de la ip es igual al que se le ha asignado
                     if(memoryIP.id === id) {
                         //ASIGNAR LOS NUEVOS VALORES
@@ -476,7 +454,6 @@
             }
         } catch (error) {
             console.log(error);
-            
         }
     }
 
@@ -484,9 +461,10 @@
     //FUNCION PARA TRAER LA URL DE LA RED
     function getNetworkId(){
         //LEER LA URL, PARA PASARLE id= AL BACKEND
-        const NetworkParams = new URLSearchParams(window.location.search);//escribir en la consola window.location
+        const NetworkParams = new URLSearchParams(window.location.search);
+
         //fromEntries: Metodo que hitera en un objeto
-        const network = Object.fromEntries(NetworkParams.entries());//entries(): trae el resultado del objeto
+        const network = Object.fromEntries(NetworkParams.entries());
         return network.id;
     }
 
@@ -494,9 +472,9 @@
     function cleanIps(){
         const ipList = document.querySelector('#listado-ips');
 
-        while (ipList.firstChild) {//mientras haya elementos
-            ipList.removeChild(ipList.firstChild);//elimina el primer elemento
+        while (ipList.firstChild) {
+            ipList.removeChild(ipList.firstChild);
         }
     }
 
-})();//este (), ejecuta esta funcion inmediatamente
+})();

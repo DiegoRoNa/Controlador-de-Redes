@@ -1,11 +1,10 @@
-//IIFE
 
-//TODO DENTRO DE ESTE CALLBACK, SE PROTEGE, ES DECIR:
-//TOAS VARIABLES Y FUNCIONES DEFINIDAS EN ESTE ARCHIVO, NO PUEDEN SER EJECUTADAS DESDE OTRO
 (function(){
 
+    const host = '';
+
     getNetworks();//MOSTRAR LAS REDES
-    let networks = [];//DOM VIRTUAL: PASO 1
+    let networks = [];
     let admin = [];
 
     //EXPRESION REGULAR PARA LOS INPUT DE LOS OCTETOS DE LA IP
@@ -24,33 +23,27 @@
 
     //FUNCION PARA CONSULTAR LAS REDES A LA API
     async function getNetworks(){
-        //CONECTAR A LA API
+        
         try {
             
-            //PRIMER await: CONEXION A LA API
-            const url = 'http://diegorona.com.devel/api/networks';
+            const url = host+'/api/networks';
             const result = await fetch(url);
 
-            //OBTENER RESPUESTA DE LA API
-            const response = await result.json();//OBJECT
+            const response = await result.json();
             
-            //DOM VIRTUAL: PASO 2
-            //ASIGNAR LAS REDES EN EL ARREGLO DECLARADO AL INICIO
             networks = response.networks;
             admin = response.session;
             showNetworks();
             
         } catch (error) {
             console.log(error);
-            
         }
     }
 
 
     //FUNCION PARA MOSTRAR LAS REDES
     function showNetworks(){
-        //DOM VIRTUAL: PASO 5
-        //Limipiar el html donde se muentran las redes
+
         cleanNetworks();
 
         //ARREGLO QUE CONTIENE EL VALOR DE networks
@@ -59,7 +52,7 @@
         //SI EL ARREGLO ESTÁ VACIO
         if (arrayNetworks.length === 0) {
             const containerPrincipal = document.querySelector('.contenedor');
-            const noNets = document.createElement('DIV');//div
+            const noNets = document.createElement('DIV');
             noNets.classList.add('descripcion-pagina');
             const noNetsH2 = document.createElement('H2');
             noNetsH2.classList.add('fuente-roja');
@@ -70,7 +63,6 @@
             return;
         }
 
-        //RECORRER EL OBJETO Y MOSTRAR LA INFORMACION DE CADA RED
         arrayNetworks.forEach(network => {
             
             //CREAR EL DIV DE CADA CARD
@@ -133,12 +125,13 @@
             cardNetwork.appendChild(cardFooter);
             
             //AGREGAR LA CARD AL LISTADO
-            const containerNetworks = document.querySelector('#listado-redes');//table
+            const containerNetworks = document.querySelector('#listado-redes');
             containerNetworks.appendChild(cardNetwork);
             
         });
     }
 
+    //FUNCION PARA MOSTRAR EL MODAL CON EL FORMULARIO
     function showForm(edit = false, network){
         const modal = document.createElement('DIV');
         modal.classList.add('modals');
@@ -187,7 +180,6 @@
             form.classList.add('animar');
         }, 0);
 
-        //CERRAR MODAL CON DELEGATION
         modal.addEventListener('click', function(e){
             e.preventDefault();
 
@@ -287,35 +279,30 @@
             modal.remove();
         }, 0);
 
-        //MOSTRAR EL AWAIT
         showWait();
 
-        //formdata siempre se usa para hacer peticiones
         const data = new FormData();
 
-        //Agregar la informacion a formData para enviar al BACKEND
         data.append('network', network);
         data.append('fi_octet', fioctet);
         data.append('s_octet', soctet);
         data.append('t_octet', toctet);
         data.append('fo_octet', fooctet);
 
-        //SIEMPRE USAR TRY-CATCH PARA HACER CONEXIONES WEBSERVICE
+        //CONECTAR A LA API
         try {
-            //PRIMER await: CONEXION A LA API
-            const url = 'http://diegorona.com.devel/api/network';
+            
+            const url = host+'/api/network';
             const result = await fetch(url, {
                 method: 'POST',
                 body: data
             });
 
-            //OBTENER LA RESPUESTA DEL BACKEND (API)
             const response = await result.json();
 
             if (response.type === 'error') {
-                //MOSTRAR MENSAJE DE EXITO
                 Swal.fire('ERROR', response.message, 'error');
-                //QUITAR EL FORMULARIO
+
                 const modal = document.querySelector('.modals');
                 setTimeout(() => {
                     modal.remove();
@@ -327,13 +314,9 @@
                     modal.remove();
                 }, 0);
 
-                //MOSTRAR MENSAJE DE EXITO
                 Swal.fire('Correcto', response.message, 'success');
             }
                 
-
-            //DOM VIRTUAL: PASO 3
-            //AGREGAR EL OBJETO DE NETWORK AL GLOBAL DE NETWORKS, IDENTICO AL DE LA BD
             const networkObj = {
                 id: String(response.id),
                 network: network,
@@ -343,20 +326,18 @@
                 fo_octet: fooctet,
                 url: (response.url)
             }
-            //DOM VIRTUAL: PASO 4
-            //CREAR UNA COPIA DE networks AGREGANDO networkObj
+ 
             networks = [...networks, networkObj];
             showNetworks();
 
-
         } catch (error) {
             console.log(error);
-        }
-        
+        }   
     }
 
+    //FUNCION PARA EDITAR UNA RED
     async function editNetwork(network){
-        //CREAR EL FORMDATA() PARA MANDARLE LA INFORMACION NUEVA A LA API
+        
         const { id, fi_octet, s_octet, t_octet, fo_octet, url } = network;
 
         const data = new FormData();
@@ -368,21 +349,14 @@
         data.append('fo_octet', fo_octet);
         data.append('url', url);
 
-        /**PARA PODER VISUALIZAR LOS DATOS QUE SE ENVIARÁN AL BACKEND
-         * for( let valor of datos.values()){
-            console.log(valor);
-        }
-         */
-
         //CONEXION A LA API
         try {
-            const url = 'http://diegorona.com.devel/api/network/update';
+            const url = host+'/api/network/update';
             const response = await fetch(url, {
                 method: 'POST',
                 body: data
             });
 
-            //OBTENER LA RESPUESTA DEL BACKEND
             const result = await response.json();
 
             if (result.type === 'error') {
@@ -408,7 +382,7 @@
                 }, 500);
 
                 //ACTUALIZAR LA RED EN TIEMPO REAL DOM VIRTUAL
-                networks = networks.map(memoryNetwork => {//hiteramos el arreglo para crear uno nuevo
+                networks = networks.map(memoryNetwork => {
                     //Evaluar si el id de la red es igual al que se le da click
                     if (memoryNetwork.id === id) {
                         //cambiar el nombre al valor nuevo del click
@@ -425,11 +399,9 @@
             
         } catch (error) {
             console.log(error);
-            
         }
         
     }
-
 
     //FUNCIONES PARA ELIMINAR RED
     function confirmDeleteNetwork(network){
@@ -439,14 +411,15 @@
             confirmButtonText: 'Sí',
             cancelButtonText: 'No'
         }).then((result) => {
-            //Read more about isConfirmed, isDenied below
+            
             if (result.isConfirmed) {
                 deletNetwork(network);
             }
+
         });
     }
     async function deletNetwork(network){
-        //CREAR EL FORMDATA() PARA MANDARLE LA INFORMACION NUEVA A LA API
+        
         const { id, fi_octet, s_octet, t_octet, fo_octet, url } = network;
 
         const data = new FormData();
@@ -460,21 +433,19 @@
 
         //CONECTAR CON LA API PARA ELIMINAR
         try {
-            const url = 'http://diegorona.com.devel/api/network/delete';
+            const url = host+'/api/network/delete';
             const response = await fetch(url, {
                 method: 'POST',
                 body: data
             });
 
-            //OBTENER LA RESPUESTA DEL BACKEND
+            
             const result = await response.json();
 
             if (result.result) {
                 //MOSTRAR MENSAJE DE EXITO
                 Swal.fire('Eliminada', result.message, 'success');
 
-                //DOM VIRTUAL PARA ELIMINACION DINAMICA
-                //filter(): Creará un arreglo nuevo con las tareas que tienen ID diferente al que vamos a eliminar
                 networks = networks.filter( memoryNetwork => memoryNetwork.id !== network.id );
                 showNetworks();
             }else{
@@ -483,14 +454,12 @@
             }
             
         } catch (error) {
-            //MOSTRAR MENSAJE DE ERROR
             Swal.fire('Hubo un error', 'No se pudo eliminar la red', 'error');
-            
         }
     }
 
 
-    //FUNCION DE MOSTRAR ESPERA
+    //FUNCION DE MOSTRAR VENTANA DE ESPERA
     function showWait(){
         const modal = document.createElement('DIV');
         modal.classList.add('modals');
@@ -511,8 +480,8 @@
     function cleanNetworks(){
         const networkList = document.querySelector('#listado-redes');
 
-        while (networkList.firstChild) {//mientras haya elementos
-            networkList.removeChild(networkList.firstChild);//elimina el primer elemento
+        while (networkList.firstChild) {
+            networkList.removeChild(networkList.firstChild);
         }
     }
 
@@ -525,4 +494,4 @@
 
         return lastDigit;
     }
-})();//este (), ejecuta esta funcion inmediatamente
+})();

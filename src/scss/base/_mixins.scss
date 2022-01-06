@@ -36,26 +36,26 @@
 }
 
 @mixin textoDegradado($color){
-    background: linear-gradient(to left, $color 0%, darken($color, 60%) 100%); //degradado
-    color: transparent; //desaparece el text
-    background-clip: text; //agrega el degradado al texto
+    background: linear-gradient(to left, $color 0%, darken($color, 60%) 100%);
+    color: transparent;
+    background-clip: text;
 }
 
 @mixin fondoDegradado($color){
-    background: linear-gradient(to right, $color 0%, lighten($color, 40%) 100%); //degradado
-    background-clip: content-box; //agrega el degradado al texto
+    background: linear-gradient(to right, $color 0%, lighten($color, 40%) 100%);
+    background-clip: content-box;
 }
 
 @mixin fondoDegradadoOscuro($color){
-    background: linear-gradient(to right, $color 0%, darken($color, 40%) 100%); //degradado
-    background-clip: content-box; //agrega el degradado al texto
+    background: linear-gradient(to right, $color 0%, darken($color, 40%) 100%);
+    background-clip: content-box;
 }
 
 @mixin scroll($color1, $color2){
-    /* ESTILOS DEL SCROLL */
+    
     &::-webkit-scrollbar{
-        width: 1rem;     /* Tamaño del scroll en vertical */
-        height: 1rem;    /* Tamaño del scroll en horizontal */
+        width: 1rem;
+        height: 1rem;
     }
     &::-webkit-scrollbar-thumb {
         background: $color1;

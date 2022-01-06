@@ -14,10 +14,8 @@ class ApiController{
         //CONSULTAR TODAS LAS REDES A LA BD
         $networks = Network::all();
 
-        //PASAMOS LA SESION
         $session = $_SESSION;
 
-        //PASAR EL OBJETO
         echo json_encode([
             'networks' => $networks,
             'session' => $session
@@ -31,7 +29,6 @@ class ApiController{
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            //INSTANCIAR OBJETO DE RED
             $network = new Network($_POST);
 
             //VALIDAR FORM
@@ -118,7 +115,7 @@ class ApiController{
             $alertas = $network->validateUpdateNetwork();
 
             if (empty($alertas)) {
-                //INSTANCIAR NUEVO OBJETO
+                
                 $network = new Network($_POST);
 
                 //GUARDARMOS EN LA BD
@@ -153,10 +150,7 @@ class ApiController{
                 ];
 
                 echo json_encode($response);
-            }
-
-            
-            
+            }  
         }
     }
 
@@ -202,9 +196,6 @@ class ApiController{
         }
     }
 
-
-
-
     //  /api/ips
     public static function select_ips(){
 
@@ -223,7 +214,6 @@ class ApiController{
         $networkID = $network->id;
         $ips = Ip::belongsTo('idNetwork', $networkID);
 
-        //PASAMOS LA SESION
         $session = $_SESSION;
 
         //RESPUESTA AL FRONTEND
@@ -254,7 +244,6 @@ class ApiController{
             //ELIMINAR DE POST LA URL
             unset($_POST['url']);
 
-            //INSTANCIAR EL NUEVO HOST CON POST
             $ip = new Ip($_POST);
 
             //GUARDAR EN LA BD
@@ -284,14 +273,10 @@ class ApiController{
                         'message' => 'Dejaste de usar la IP',
                     ];
                     echo json_encode($response);
-                }
-                
+                }   
             }
-            
         }
     }
-
-
 
     //  /api/admins
     public static function select_admins(){
@@ -304,7 +289,6 @@ class ApiController{
             unset($admin->password2);
         }
     
-        //PASAMOS LA SESION
         $session = $_SESSION;
 
         echo json_encode([
@@ -317,7 +301,6 @@ class ApiController{
     public static function create_admins(){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            //INSTANCIAR EL OBJETO
             $admin = new Admin($_POST);
 
             //VALIDAR QUE NO EXISTA EL ADMIN EN LA BD
@@ -367,7 +350,6 @@ class ApiController{
                 ];
                 echo json_encode($response);
             }
-            
         }
     }
 
@@ -387,8 +369,8 @@ class ApiController{
                 return;
             }
 
-            //INSTANCIAR OBJETO
             $admin = new Admin($_POST);
+
             //COLOCAR LA CONTRASEÑA EN EL OBJETO
             $admin->password = $adminExists->password;
             unset($admin->password2);
@@ -420,6 +402,7 @@ class ApiController{
     //  /api/admin/delete
     public static function delete_admins(){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
             //VALIDAR QUE EL ADMIN EXISTE EN LA BD
             $admin = Admin::where('id', $_POST['id']);
             if (!$admin) {
@@ -455,6 +438,5 @@ class ApiController{
             echo json_encode($response);
         }
     }
-
 }
 

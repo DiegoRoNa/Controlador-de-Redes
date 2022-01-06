@@ -20,6 +20,7 @@ class LoginController{
             $alertas = $admin->validateLogin();
 
             if (empty($alertas)) {
+
                 //BUSCAR EL USUARIO EN LA BD CON EL CORREO
                 $admin = Admin::where('email', $admin->email);
 
@@ -42,7 +43,6 @@ class LoginController{
                         $_SESSION['role'] = $admin->role;
                         $_SESSION['login'] = true;
   
-                        //REDIRECCIONAR
                         header('Location: /controller');
                     }
                 }                
@@ -59,7 +59,7 @@ class LoginController{
 
     //  /logout
     public static function logout(){
-        //VACIAR LA SESION
+        
         $_SESSION = [];
 
         header('Location: /');
@@ -102,7 +102,6 @@ class LoginController{
                     Admin::setAlerta('error', 'Hubo un error, no hay una cuenta vinculada con este correo o la cuenta no ha sido confirmada');
                     
                 }
-
             }
         }
 
@@ -153,9 +152,7 @@ class LoginController{
                 //GUARDAR EN LA BD
                 $resultado = $admin->guardar();
 
-                //REDIRECCIONAR
-                if ($resultado) {
-                    
+                if ($resultado) {                    
                     header('Location: /');
                 }
             }
@@ -188,9 +185,9 @@ class LoginController{
             Admin::setAlerta('error', 'Token no válido');
         }else{
             //CONFIRMAR LA CUENTA
-            $admin->confirm = 1;//cambiar confirmado
-            $admin->token = null;//eliminar el token
-            unset($admin->password2);//eliminar el password2
+            $admin->confirm = 1;
+            $admin->token = null;
+            unset($admin->password2);
 
             //ACTUALIZAR EN LA BD
             $admin->guardar();

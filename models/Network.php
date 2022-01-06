@@ -16,9 +16,7 @@ class Network extends ActiveRecord{
         $this->t_octet = $args['t_octet'] ?? '';
         $this->fo_octet = $args['fo_octet'] ?? '';
         $this->url = $args['url'] ?? '';
-    }
-
-   
+    } 
 
     //VALIDACION DE CREAR RED
     public function validateCreateNetwork() : array{
@@ -49,8 +47,6 @@ class Network extends ActiveRecord{
 
         return self::$alertas;
     }
-
-
 
     //VALIDACION DE ACTUALIZAR RED
     public function validateUpdateNetwork() : array{

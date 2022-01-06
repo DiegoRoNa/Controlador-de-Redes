@@ -1,14 +1,10 @@
 
 //EXPRESIONES REGULARES
 const expresiones = {
-    //usuario: /^[a-zA-Z0-9\_\-]{4,16}$/, // Letras, numeros, guion y guion_bajo
-    //nombre: /^[a-zA-ZÀ-ÿ\s]{1,40}$/, // Letras y espacios, pueden llevar acentos.
-    //apellidos: /^[a-zA-ZÀ-ÿ\s]{1,90}$/, // Letras y espacios, pueden llevar acentos.
-    password: /^.{6,10}$/, // 6 a 10 digitos.
+    password: /^.{6,10}$/,
     email: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-    network: /^[a-zA-Z0-9\_\-\s]{1,20}$/, // Letras, numeros, guion y guion_bajo, de 1 a 20 caracteres
+    network: /^[a-zA-Z0-9\_\-\s]{1,20}$/,
     octet: /^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/
-    //paquete: /^\d{1,2}$/ // 1 a 2 numeros.
 }
 
 const validarFormulario = (e) =>{
@@ -47,7 +43,7 @@ const validarFormulario = (e) =>{
 
 
 const validarCampo = (expresion, input, campo) => {
-    if (expresion.test(input.value)) {//test: compara el value con la expresion regular
+    if (expresion.test(input.value)) {
         //TRUE
         document.getElementById(`campo-${campo}`).classList.remove('campo-incorrecto');
         document.getElementById(`campo-${campo}`).classList.add('campo-correcto');
@@ -67,7 +63,7 @@ const inputs = document.querySelectorAll('.formulario input');
 
 //RECORRER EL ARREGLO DE INPUTS Y DARLES EVENTOS
 inputs.forEach( (input) => {
-    input.addEventListener('keyup', validarFormulario);//tecla levantada
-    input.addEventListener('blur', validarFormulario);//click fuera del input
+    input.addEventListener('keyup', validarFormulario);
+    input.addEventListener('blur', validarFormulario);
 });
 

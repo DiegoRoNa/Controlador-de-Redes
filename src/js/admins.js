@@ -1,21 +1,20 @@
-//IIFE
 
-//TODO DENTRO DE ESTE CALLBACK, SE PROTEGE, ES DECIR:
-//TOAS VARIABLES Y FUNCIONES DEFINIDAS EN ESTE ARCHIVO, NO PUEDEN SER EJECUTADAS DESDE OTRO
 (function(){
+
+    const host = '';
 
     //MOSTRAR ADMINS
     getAdmins();
-    let admins = []; //DOM VIRTUAL: PASO 1
-    let filtered = [];//arreglo para los filtros
+    let admins = [];
+    let filtered = [];
     let adminSession = [];
 
     //EXPRESION REGULAR PARA LOS INPUT DE LOS FORMULARIOS
     const expressions = {
-        name: /^[a-zA-ZÀ-ÿ\s]{1,40}$/, // Letras y espacios, pueden llevar acentos.
-        surnames: /^[a-zA-ZÀ-ÿ\s]{1,80}$/, // Letras y espacios, pueden llevar acentos.
+        name: /^[a-zA-ZÀ-ÿ\s]{1,40}$/,
+        surnames: /^[a-zA-ZÀ-ÿ\s]{1,80}$/,
         email: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-        password: /^.{6,10}$/, // 6 a 10 digitos.
+        password: /^.{6,10}$/,
         role: /^[a-z_]{1,7}$/
     }
 
@@ -35,18 +34,16 @@
 
     //FILTROS DE BUSQUEDA
     const filters = document.querySelectorAll('#filtros input[type="radio"]');
-
-    //Hiterar sobre los input para añadirles un evento
     filters.forEach( radio => {
         radio.addEventListener('input', filterAdmin);
     });
+
     function filterAdmin(e){
-        //VALUE DE LOS INPUT
+        
         const filter = e.target.value;
         
         //Si el filtro es direfente a TODAS
         if (filter !== '') {
-            //FILTER: Hiteramos y creamos un nuevo arreglo con cada tarea por el estado 
             filtered = admins.filter( admin => admin.role === filter);
         }else{
             filtered = [];
@@ -55,21 +52,15 @@
         showAdmins();
     }
 
-
-
-
     //FUNCION PARA CONSULTAR LOS ADMINS A LA API
     async function getAdmins(){
         try {
-            //PRIMER await: CONEXION A LA API
-            const url = 'http://diegorona.com.devel/api/admins';
+            
+            const url = host+'/api/admins';
             const result = await fetch(url);
 
-            //RESPUESTA DE LA API
             const response = await result.json();
 
-            //DOM VIRTUAL: PASO 2
-            //ASIGNAR LOS ADMINS EN EL ARREGLO DECLARADO AL INICIO
             admins = response.admins;
             adminSession = response.session;
             showAdmins();
@@ -79,11 +70,9 @@
         }
     }
 
-
     //FUNCION PARA MOSTRAR LOS ADMINS
     function showAdmins(){
-        //DOM VIRTUAL: PASO 5
-        //Limipiar el html donde se muentran los ADMINS
+
         cleanAdmins();
 
         //VERIFICACION DE LOS ROLES DE LOS ADMINS
@@ -91,9 +80,6 @@
         totalAdmin();
         totalGuest();
 
-        //ASGINAMOS EL ARREGLO QUE CORRESPONDA AL FILTRO
-        //SI filtered CONTIENE ALGO, arrayAdmins CONTIENE EL VALOR DE filtered
-        //SI NO, CONTIENE EL VALOR DE admins
         const arrayAdmins = filtered.length ? filtered : admins;
  
         //SI EL ARREGLO arrayAdmins ESTÁ VACIO
@@ -111,7 +97,6 @@
             containerAdmins.appendChild(noAdminsTHEAD);
             return;
         }
-
 
         //SI EL ARREGLO TIENE ADMINS
         //CREAR Y LLENAR LA TABLA
@@ -204,7 +189,6 @@
 
     }
 
-
     //FUNCIONES DEL MODAL FORMULARIO
     function showForm(edit = false, admin){
         const modal = document.createElement('DIV');
@@ -280,7 +264,6 @@
             form.classList.add('animarA');
         }, 0);
 
-        //CERRAR MODAL CON DELEGATION
         modal.addEventListener('click', function(e){
             e.preventDefault();
 
@@ -407,10 +390,8 @@
 
     //FUNCION PARA AGREGAR ADMIN
     async function addAdmin(name, surnames, email, password, password2, role){
-        //formdata siempre se usa para hacer peticiones
+        
         const data = new FormData();
-
-        //Agregar la informacion a formData para enviar al BACKEND
         data.append('name', name);
         data.append('surnames', surnames);
         data.append('email', email);
@@ -418,16 +399,15 @@
         data.append('password2', password2);
         data.append('role', role);
 
-        //SIEMPRE USAR TRY-CATCH PARA HACER CONEXIONES WEBSERVICE
+        //CONECTAR A LA API
         try {
-            //PRIMER await: CONEXION A LA API
-            const url = 'http://diegorona.com.devel/api/admin';
+            
+            const url = host+'/api/admin';
             const response = await fetch(url, {
                 method: 'POST',
                 body: data
             });
 
-            //OBTENER LA RESPUESTA DEL BACKEND
             const result = await response.json();
             
             if (result.type === 'exito') {
@@ -443,7 +423,6 @@
                     modal.remove();
                 }, 500);
 
-                //DOM VIRTUAL: PASO 3
                 //AGREGAR EL OBJETO DE ADMIN AL GLOBAL DE ADMINS, IDENTICO AL DE LA BD
                 const adminObj = {
                     id: String(result.id),
@@ -455,7 +434,6 @@
                     confirm: result.confirm
                 }
                 
-                //DOM VIRTUAL: PASO 4
                 //CREAR UNA COPIA DE admins AGREGANDO adminObj
                 admins = [...admins, adminObj];
                 showAdmins();
@@ -475,14 +453,12 @@
             
         }catch (error){
             console.log(error);
-            
         }
     }
 
-
     //FUNCION PARA EDITAR ADMINS
     async function editAdmin(admin){
-        //CREAR EL FORMDATA() PARA MANDARLE LA INFORMACION NUEVA A LA API
+
         const { id, name, surnames, email, role, confirm } = admin;
 
         const data = new FormData();
@@ -493,20 +469,14 @@
         data.append('role', role);
         data.append('confirm', confirm);
 
-        /**PARA PODER VISUALIZAR LOS DATOS QUE SE ENVIARÁN AL BACKEND
-         * for( let valor of datos.values()){
-            console.log(valor);
-        }
-         */
-
+        //CONECTAR A LA API
         try {
-            const url = 'http://diegorona.com.devel/api/admin/update';
+            const url = host+'/api/admin/update';
             const response = await fetch(url, {
                 method: 'POST',
                 body: data
             });
 
-            //OBTENER LA RESPUESTA DEL BACKEND
             const result = await response.json();
 
             if (result.type === 'exito') {
@@ -523,7 +493,7 @@
                 }, 500);
 
                 //ACTUALIZAR LA RED EN TIEMPO REAL DOM VIRTUAL
-                admins = admins.map(memoryAdmin => {//hiteramos el arreglo para crear uno nuevo
+                admins = admins.map(memoryAdmin => {
                     //Evaluar si el id de la red es igual al que se le da click
                     if (memoryAdmin.id === id) {
                         //cambiar el nombre al valor nuevo del click
@@ -545,7 +515,6 @@
             
         } catch (error) {
             console.log(error);
-            
         }
         
     }
@@ -558,14 +527,14 @@
             confirmButtonText: 'Sí',
             cancelButtonText: 'No'
         }).then((result) => {
-            //Read more about isConfirmed, isDenied below
+            
             if (result.isConfirmed) {
                 deleteAdmin(admin);
             }
         });
     }
     async function deleteAdmin(admin){
-        //CREAR EL FORMDATA() PARA MANDARLE LA INFORMACION NUEVA A LA API
+    
         const { id, name, surnames, email, role, confirm } = admin;
 
         const data = new FormData();
@@ -576,22 +545,20 @@
         data.append('role', role);
         data.append('confirm', confirm);
 
-        //CONECTAR CON LA API PARA ELIMINAR
+        //CONECTAR CON LA API
         try {
-            const url = 'http://diegorona.com.devel/api/admin/delete';
+            const url = host+'/api/admin/delete';
             const response = await fetch(url, {
                 method: 'POST',
                 body: data
             });
 
-            //OBTENER LA RESPUESTA DEL BACKEND
             const result = await response.json();
 
             if (result.result) {
                 //MOSTRAR MENSAJE DE EXITO
                 Swal.fire('Eliminada', result.message, 'success');
 
-                //DOM VIRTUAL PARA ELIMINACION DINAMICA
                 //filter(): Creará un arreglo nuevo con las tareas que tienen ID diferente al que vamos a eliminar
                 admins = admins.filter( memoryAdmin => memoryAdmin.id !== admin.id );
                 showAdmins();
@@ -602,14 +569,12 @@
             
         } catch (error) {
             console.log(error);
-            
         }
     }
 
-
     //FUNCIONES PARA CALCULAR LOS ROLES DE LOS ADMINS
     function totalSuperAdmin(){
-        //filter(): Creará un arreglo nuevo con los admins que tienen role s_admin
+
         const totalSuperAdmin = admins.filter( admin => admin.role === 's_admin');
         const sAdminRadio = document.querySelector('#s_admin');//radio s_admin
 
@@ -622,7 +587,7 @@
     }
 
     function totalAdmin(){
-        //filter(): Creará un arreglo nuevo con los admins que tienen role admin
+        
         const totalAdmin = admins.filter( admin => admin.role === 'admin');
         const adminRadio = document.querySelector('#admin');//radio admin
 
@@ -635,7 +600,7 @@
     }
 
     function totalGuest(){
-        //filter(): Creará un arreglo nuevo con los admins que tienen role admin
+        
         const totalGuest = admins.filter( admin => admin.role === 'guest');
         const guestRadio = document.querySelector('#guest');//radio guest
 
@@ -652,9 +617,9 @@
     function cleanAdmins(){
         const adminList = document.querySelector('#listado-admins');
 
-        while (adminList.firstChild) {//mientras haya elementos
-            adminList.removeChild(adminList.firstChild);//elimina el primer elemento
+        while (adminList.firstChild) {
+            adminList.removeChild(adminList.firstChild);
         }
     }
 
-})();//este (), ejecuta esta funcion inmediatamente
+})();

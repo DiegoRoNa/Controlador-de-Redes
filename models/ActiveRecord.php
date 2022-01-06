@@ -16,7 +16,6 @@ class ActiveRecord {
     }
 
     // Crear una alerta, esta alerta está en memoria
-    // Después de usar este método usar getAlertas()
     public static function setAlerta($tipo, $mensaje) {
         static::$alertas[$tipo][] = $mensaje;
     }
@@ -46,7 +45,6 @@ class ActiveRecord {
 
     // Todos los registros
     public static function all() {
-        //static:: HEREDA, BUSCANDO LA PROPIEDA STATIC EN LAS CLASES A HEREDAR
         $query = "SELECT * FROM " . static::$tabla;
         $resultado = self::consultarSQL($query);
         return $resultado;
@@ -56,7 +54,7 @@ class ActiveRecord {
     public static function find($id) {
         $query = "SELECT * FROM " . static::$tabla  ." WHERE id = ${id}";
         $resultado = self::consultarSQL($query);
-        return array_shift( $resultado );//toma el primer elemento del arreglo
+        return array_shift( $resultado );
     }
 
     // Obtener Registro con cierta cantidad
@@ -70,7 +68,7 @@ class ActiveRecord {
     public static function where($columna, $valor) {
         $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} = '${valor}'";
         $resultado = self::consultarSQL($query);
-        return array_shift( $resultado );//Sretorna solo el primer elemento del array
+        return array_shift( $resultado );
     }
 
     // Busqueda todos los registros que tienen el mismo ID 
@@ -94,14 +92,12 @@ class ActiveRecord {
         return $resultado;
     }
 
-
     //ELIMINAR REGISTROS POR ID ESPECIFO
     public static function eliminarEspecifico($columna, $id) {
         $query = "DELETE FROM "  . static::$tabla . " WHERE ${columna} = ${id}";
         $resultado = self::$db->query($query);
         return $resultado;
     }
-
 
     // SQL para Consultas Avanzadas.
     //Consulta plana de SQL (usar cuando los métodos del modelo no son suficientes)
@@ -113,17 +109,15 @@ class ActiveRecord {
 
     // crea un nuevo registro
     public function crear() {
-        // Sanitizar los datos
+        
         $atributos = $this->sanitizarAtributos();
 
-        // Insertar en la base de datos
         $query = " INSERT INTO " . static::$tabla . " ( ";
-        $query .= join(', ', array_keys($atributos));//JOIN convierte a un string, las llaves del arreglo de atributos
+        $query .= join(', ', array_keys($atributos));
         $query .= " ) VALUES (' "; 
-        $query .= join("', '", array_values($atributos));//JOIN convierte a un string, los valores del arreglo de atributos
+        $query .= join("', '", array_values($atributos));
         $query .= " ') ";
 
-        // Resultado de la consulta
         $resultado = self::$db->query($query);
 
         return [
@@ -134,25 +128,21 @@ class ActiveRecord {
 
     // Actualizar el registro
     public function actualizar() {
-        // Sanitizar los datos
+        
         $atributos = $this->sanitizarAtributos();
 
-        // Iterar para ir agregando cada campo de la BD
         $valores = [];
         foreach($atributos as $key => $value) {
             $valores[] = "{$key}='{$value}'";
         }
 
-        // Consulta SQL
         $query = "UPDATE " . static::$tabla ." SET ";
         $query .=  join(', ', $valores );
         $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
         $query .= " LIMIT 1 "; 
 
-        // debuguear($query);
-
-        // Actualizar BD
         $resultado = self::$db->query($query);
+
         return $resultado;
     }
 
@@ -165,10 +155,8 @@ class ActiveRecord {
 
     // Consulta SQL para crear un objeto en Memoria
     public static function consultarSQL($query) {
-        // Consultar la base de datos
         $resultado = self::$db->query($query);
 
-        // Iterar los resultados
         $array = [];
         while($registro = $resultado->fetch_assoc()) {
             $array[] = static::crearObjeto($registro);
@@ -177,7 +165,6 @@ class ActiveRecord {
         // liberar la memoria
         $resultado->free();
 
-        // retornar los resultados
         return $array;
     }
 
@@ -193,8 +180,6 @@ class ActiveRecord {
 
         return $objeto;
     }
-
-
 
     // Identificar y unir los atributos de la BD
     public function atributos() {

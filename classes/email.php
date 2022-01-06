@@ -19,24 +19,21 @@ class Email{
 
     //CORREO DE CONFIRMACION DE CUENTA CREADA
     public function enviarConfirmacion(string $email){
-        //INSTANCIAR OBJETO DE phpmailer
+        
         $mail = new PHPMailer();
 
         //CONFIGURAR SMTP (protocolo de envio de emails)
         $mail->isSMTP();
         $mail->SMTPAuth = true;
         $mail->SMTPSecure = 'tls';
-        $mail->Host = 'smtp.mailtrap.io';
-        $mail->Port = 2525;
-        $mail->Username = '6af1d46c425e21';
-        $mail->Password = '48839d180320e5';
+        $mail->Host = '';  //Coloca el servidor
+        $mail->Port = ;  //Coloca el puerto
+        $mail->Username = '';  //Coloca tu usuario
+        $mail->Password = '';  //Coloca tu contraseña
 
-        //CONFIGURAR EL CONTENIDO DEL EMAIL
-        $mail->setFrom('controladorredes@controlador.com');//Quien envía el email
-        $mail->addAddress($email, 'Controlador Redes');//A quien se envía el email
-        $mail->Subject = 'Confirmar cuenta';//Mensaje que aparece en el email
-
-        //HABILITAR HTML
+        $mail->setFrom('controladorredes@controlador.com');
+        $mail->addAddress($email, 'Controlador Redes');
+        $mail->Subject = 'Confirmar cuenta';
         $mail->isHTML(true);
         $mail->CharSet = 'UTF-8';
 
@@ -139,7 +136,7 @@ class Email{
                             $contenido .='<h3>Hola '. $this->nombre .', se ha creado tu cuenta en el Controlador de Redes</h3>';
                             $contenido .="<p>Presiona en el siguiente botón para confirmar la cuenta:</p>      
                                 <div class='boton'>
-                                    <a class='button' href='http://diegorona.com.devel/confirm?token=" . $this->token . "'>Confirmar cuenta</a>
+                                    <a class='button' href='".HOST."/confirm?token=" . $this->token . "'>Confirmar cuenta</a>
                                 </div>
                                 <p class='no'>Si tú no hiciste la solicitud, o ya tienes tu cuenta confirmada ignora este mensaje</p>
                             </div>
@@ -157,24 +154,22 @@ class Email{
 
     // INSTRUCCIONES PARA CAMBIAR EL PASSWORD
     public function enviarInstrucciones(string $email){
-        //INSTANCIAR OBJETO DE phpmailer
+        
         $mail = new PHPMailer();
 
         //CONFIGURAR SMTP (protocolo de envio de emails)
         $mail->isSMTP();
         $mail->SMTPAuth = true;
         $mail->SMTPSecure = 'tls';
-        $mail->Host = 'smtp.mailtrap.io';
-        $mail->Port = 2525;
-        $mail->Username = '6af1d46c425e21';
-        $mail->Password = '48839d180320e5';
+        $mail->Host = '';  //Coloca el servidor
+        $mail->Port = ;  //Coloca el puerto
+        $mail->Username = '';  //Coloca tu usuario
+        $mail->Password = '';  //Coloca tu contraseña
 
-        //CONFIGURAR EL CONTENIDO DEL EMAIL
-        $mail->setFrom('diegorn.10@hotmail.com');//Quien envía el email
-        $mail->addAddress($email, 'Controlador Redes');//A quien se envía el email
-        $mail->Subject = 'Reestablece tu contraseña';//Mensaje que aparece en el email
+        $mail->setFrom('controladorredes@controlador.com');
+        $mail->addAddress($email, 'Controlador Redes');
+        $mail->Subject = 'Reestablece tu contraseña';
 
-        //HABILITAR HTML
         $mail->isHTML(true);
         $mail->CharSet = 'UTF-8';
 
@@ -277,7 +272,7 @@ class Email{
                             $contenido .='<h3>Hola '. $this->nombre .', has solicitado cambiar tu contraseña</h3>';
                             $contenido .="<p>Presiona en el siguiente botón para continuar con el procedimiento:</p>      
                                 <div class='boton'>
-                                    <a class='button' href='http://diegorona.com.devel/reestablish?token=" . $this->token . "'>Reestablecer contraseña</a>
+                                    <a class='button' href='".HOST."/reestablish?token=" . $this->token . "'>Reestablecer contraseña</a>
                                 </div>
                                 <p class='no'>Si tú no hiciste la solicitud, ignora el mensaje</p>
                             </div>

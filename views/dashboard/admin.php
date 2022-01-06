@@ -32,51 +32,7 @@
             </div>
 
             <!--LOS USUARIOS SE MUESTRAN DESDE JS-->
-            <table id="listado-admins" class="table table-dark table-borderless listado-admins">
-                <!--<thead>
-                    <tr class="table-light">
-                        <th class="fuente-roja">No tienes administradores</th>
-                    </tr>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Rol</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="s_admin">
-                        <td class="editar-admin">Diego Rojas Nava</td>
-                        <td>diegorn.10@hotmail.com</td>
-                        <td>Super Administrador</td>
-                        <td>
-                            <div class="opcion">
-                                <button class="btn-eliminar">Eliminar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="admin">
-                        <td class="editar-admin">Neila Castelán Silva</td>
-                        <td>neila@neila.com</td>
-                        <td>Administrador</td>
-                        <td>
-                            <div class="opcion">
-                                <button class="btn-eliminar">Eliminar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="guest">
-                        <td class="editar-admin">Javier Rojas Nava</td>
-                        <td>javier@javier.com</td>
-                        <td>Invitado</td>
-                        <td>
-                            <div class="opcion">
-                                <button class="btn-eliminar">Eliminar</button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>-->
-            </table>
+            <table id="listado-admins" class="table table-dark table-borderless listado-admins"></table>
         </div><!--contenedor-->
 
 <?php 

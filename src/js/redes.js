@@ -1,7 +1,7 @@
 
 (function(){
 
-    const host = '';
+    const hosting = '';
 
     getNetworks();//MOSTRAR LAS REDES
     let networks = [];
@@ -26,7 +26,7 @@
         
         try {
             
-            const url = host+'/api/networks';
+            const url = hosting+'/api/networks';
             const result = await fetch(url);
 
             const response = await result.json();
@@ -292,7 +292,7 @@
         //CONECTAR A LA API
         try {
             
-            const url = host+'/api/network';
+            const url = hosting+'/api/network';
             const result = await fetch(url, {
                 method: 'POST',
                 body: data
@@ -351,7 +351,7 @@
 
         //CONEXION A LA API
         try {
-            const url = host+'/api/network/update';
+            const url = hosting+'/api/network/update';
             const response = await fetch(url, {
                 method: 'POST',
                 body: data
@@ -433,7 +433,7 @@
 
         //CONECTAR CON LA API PARA ELIMINAR
         try {
-            const url = host+'/api/network/delete';
+            const url = hosting+'/api/network/delete';
             const response = await fetch(url, {
                 method: 'POST',
                 body: data

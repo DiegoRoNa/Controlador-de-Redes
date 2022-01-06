@@ -1,7 +1,7 @@
 
 (function(){
 
-    const host = '';
+    const hosting = '';
 
     //MOSTRAR LAS IPS
     getIps();
@@ -45,7 +45,7 @@
             //OBTENER RED
             const id = getNetworkId();
             
-            const url = host+`/api/ips?id=${id}`;
+            const url = hosting+`/api/ips?id=${id}`;
             const result = await fetch(url);
 
             const response = await result.json();
@@ -400,7 +400,7 @@
         //CONECTAR A LA API
         try {
 
-            const url = host+'/api/host';
+            const url = hosting+'/api/host';
             const result = await fetch(url, {
                 method: 'POST',
                 body: data

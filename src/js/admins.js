@@ -1,7 +1,7 @@
 
 (function(){
 
-    const host = '';
+    const hosting = '';
 
     //MOSTRAR ADMINS
     getAdmins();
@@ -56,7 +56,7 @@
     async function getAdmins(){
         try {
             
-            const url = host+'/api/admins';
+            const url = hosting+'/api/admins';
             const result = await fetch(url);
 
             const response = await result.json();
@@ -402,7 +402,7 @@
         //CONECTAR A LA API
         try {
             
-            const url = host+'/api/admin';
+            const url = hosting+'/api/admin';
             const response = await fetch(url, {
                 method: 'POST',
                 body: data
@@ -471,7 +471,7 @@
 
         //CONECTAR A LA API
         try {
-            const url = host+'/api/admin/update';
+            const url = hosting+'/api/admin/update';
             const response = await fetch(url, {
                 method: 'POST',
                 body: data
@@ -547,7 +547,7 @@
 
         //CONECTAR CON LA API
         try {
-            const url = host+'/api/admin/delete';
+            const url = hosting+'/api/admin/delete';
             const response = await fetch(url, {
                 method: 'POST',
                 body: data

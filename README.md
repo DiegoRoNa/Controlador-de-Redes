@@ -7,7 +7,7 @@ Hecho por Diego Rojas Nava. diegorn.10@hotmail.com
 
 Este proyecto consiste en un Dashboard para administrar las IPS que se están usando en una red, este proyecto no lee las IPS de manera real, ni las redes.
 
-**Contiene: **
+**Contiene**:
 - Consume una API creada para hacer el CRUD de redes, ips y admins
 - Sección de Login: Donde ingresas el email y la contraseña
 - Sección de recuperar contraseña: El usuario ingresa tu correo, y se le envía el enlace para cambiar la contraseña
@@ -34,12 +34,12 @@ Este proyecto consiste en un Dashboard para administrar las IPS que se están us
 - El proyecto trabaja con MVC
 - Se usan algunas herramientas y estilos de Bootstrap 5
 
-###Para revisar la funcionabilidad de este proyecto sigue estos pasos:
+### Para revisar la funcionabilidad de este proyecto sigue estos pasos:
 
-####Paso 1
+#### Paso 1
 Descargar el proyecto, colócalo en tu carpeta de tu servidor web local (xampp, wampp, laragon, etc)
 
-####Paso 2
+#### Paso 2
 Crea un host virtual en tu servidor web, ya que este proyecto está pensado para trabajar en producción y la URL se debe mantener lo más fiel posible a un proyecto en un hosting real.
 
 Puedes usar este código para hacer tu host virtual, en tu archivo **httpd-vhosts.conf**, este es un ejemplo en xampp (Varía dependiendo del servidor local que estés usando).
@@ -56,7 +56,7 @@ Puedes usar este código para hacer tu host virtual, en tu archivo **httpd-vhost
     < /Directory>
 < /VirtualHost> 
 
-####Paso 3
+#### Paso 3
 **Para este paso debe tener instalado node.js y npm**
 
 Desde la raíz del proyecto Instala gulp globalmente:
@@ -69,22 +69,22 @@ Posteiormente instala las dependencias de npm desde la terminal o cmd, con el co
 
 `$ npm install`
 
-####Paso 4
+#### Paso 4
 Desde la raíz del proyecto Instala las dependencias de composer desde la terminal o cmd, con el comando:
 (Recuerda tener instalado composer globalmente)
 
 `$ composer update`
 
-####Paso 5
+#### Paso 5
 Si deseas editar archivos JS, agregar imágenes o estilos en SASS. Necesitas arrancar las tareas de gulp, usando cualquiera de estos comandos
 
 `$ npm start` (recomendado)
 `$ gulp`
 
-####Paso 6
+#### Paso 6
 Crea la base de datos con el nombre **controlador_redes**, e importa el archivo **controlador_redes.sql**
 
-####Paso 7
+#### Paso 7
 Cambia las credenciales de envío de correos, en la carpeta **classes**, en las funciones **enviarConfirmacion** y **enviarInstrucciones**
 
 
@@ -98,15 +98,15 @@ Cambia las credenciales de envío de correos, en la carpeta **classes**, en las 
         $mail->Password = ''; //Contraseña
 
 
-####Paso 8
+#### Paso 8
 Cambia las URL para consumir la API que contiene el proyecto, en los archivos JS en la carpeta **src**, en los archivos** redes.js**, **ips.js** y **admins.js**
 
 Ejemplo:
 ```javascript
-const host = 'http://controlador.com.devel';
+const hosting = 'http://controlador.com.devel';
 ```
 Cambia **http://controlador.com.devel** por el que hayas colocado en tu host virtual
 
 Cambia la super global creada en el archivo **globales.php** dentro de la carpeta **includes**, por el hosting virtual que creaste
 
-        define('HOST', '');
+        define('HOSTING', '');
